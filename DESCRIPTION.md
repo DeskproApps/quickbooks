@@ -1,4 +1,3 @@
-My App
-======
+# QuickBooks App
 
-todo: add a description that will appear alongside your app in Deskpro admin
+Manage your finances effortlessly with QuickBooks, the ultimate accounting software.

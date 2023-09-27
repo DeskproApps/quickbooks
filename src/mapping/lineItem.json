@@ -1,0 +1,46 @@
+{
+  "create": [
+    {}
+  ],
+  "single": [
+    [
+      {
+        "name": "Description",
+        "label": "",
+        "type": "text"
+      },
+      {
+        "name": "SalesItemLineDetail.ItemRef.name",
+        "label": "Item Ref",
+        "type": "key"
+      },
+      {
+        "name": "Amount",
+        "label": "",
+        "type": "currency"
+      }
+    ],
+    [
+      {
+        "name": "SalesItemLineDetail.Qty",
+        "label": "Quantity",
+        "type": "key"
+      },
+      {
+        "name": "Amount",
+        "label": "Amount",
+        "type": "currency"
+      },
+      {
+        "name": "SalesItemLineDetail.ItemRef.value",
+        "label": "Item Ref",
+        "type": "key"
+      },
+      {
+        "name": "SalesItemLineDetail.UnitPrice",
+        "label": "Unt Price",
+        "type": "currency"
+      }
+    ]
+  ]
+}

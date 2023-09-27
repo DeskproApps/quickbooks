@@ -1,26 +1,75 @@
 {
-  "name": "@deskpro-apps/my-app",
-  "title": "My App",
+  "name": "@deskpro-apps/quickbooks",
+  "title": "QuickBooks",
   "description": "My Deskpro app",
-  "version": "0.0.4",
+  "version": "0.0.0",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
-  "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
+  "targets": [
+    {
+      "target": "user_sidebar",
+      "entrypoint": "index.html"
+    }
+  ],
   "settings": {
-    "example": {
-      "title": "Example Setting",
+    "client_id": {
+      "title": "Client ID",
       "description": "Example backend only setting",
       "type": "string",
-      "isRequired": false,
+      "isRequired": true,
       "isBackendOnly": true
+    },
+    "client_secret": {
+      "title": "Client Secret",
+      "description": "Example backend only setting",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true
+    },
+    "company_id": {
+      "title": "Company ID",
+      "description": "Example backend only setting",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true
+    },
+    "global_access_token": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "http://localhost:3000/#/admin/globalauth"
+      },
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 30
+    }
+  },
+  "entityAssociations": {
+    "linkedCustomer": {
+      "entity": "user",
+      "type": "external_id",
+      "title": "Linked QuickBooks Customer"
     }
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://(sandbox-)?quickbooks.api.intuit.com/.*",
+        "methods": [
+          "GET",
+          "POST",
+          "PATCH",
+          "PUT",
+          "DELETE"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer",
+        "methods": [
+          "POST"
+        ],
         "timeout": 20
       }
     ]

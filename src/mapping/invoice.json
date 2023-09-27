@@ -1,0 +1,100 @@
+{
+  "titleKeyName": "DocNumber",
+  "idKey": "Id",
+  "title": "Invoice",
+  "internalChildUrl": "/view/single/Invoice/",
+  "externalUrl": "https://app.qbo.intuit.com/app/reportv2?token=OPEN_INVOICES",
+  "internalUrl": "/view/list/Invoice/",
+  "create": [
+    {
+      "name": "DocNumber",
+      "label": "Document Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "DueDate",
+      "label": "Due Date",
+      "type": "date"
+    }
+  ],
+  "single": [
+    [
+      {
+        "name": "lineitem",
+        "label": "lineitem",
+        "type": "lineitem"
+      }
+    ],
+    [
+      {
+        "name": "CompanyName",
+        "label": "Company",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryEmailAddr.Address",
+        "label": "Email",
+        "type": "key"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryPhone.FreeFormNumber",
+        "label": "Phone",
+        "type": "key"
+      }
+    ],
+    [
+      {
+        "name": "Balance",
+        "label": "Balance",
+        "type": "balance"
+      }
+    ],
+    [
+      {
+        "name": "DueDate",
+        "label": "Due Date",
+        "type": "date"
+      }
+    ],
+    [
+      {
+        "name": "BillAddr",
+        "label": "Billing Address",
+        "type": "address"
+      }
+    ],
+    [
+      {
+        "name": "PrivateNote",
+        "label": "Private Note",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "CustomerMemo.value",
+        "label": "Customer Note",
+        "type": "key"
+      }
+    ]
+  ],
+  "list": [
+    [
+      {
+        "name": "EInvoiceStatus",
+        "label": "Invoice Status",
+        "type": "invoice"
+      },
+      {
+        "name": "DueDate",
+        "label": "Due Date",
+        "type": "date"
+      }
+    ]
+  ]
+}

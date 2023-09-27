@@ -1,0 +1,59 @@
+{
+  "titleKeyName": "Id",
+  "idKey": "Id",
+  "title": "Purchase Order",
+  "internalUrl": "/view/list/PurchaseOrder",
+  "externalUrl": "https://app.qbo.intuit.com/app/reportv2?token=OPEN_PO_LIST",
+  "internalChildUrl": "/view/single/PurchaseOrder",
+  "single": [
+    [
+      {
+        "name": "CompanyName",
+        "label": "Company",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryEmailAddr.Address",
+        "label": "Email",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryPhone.FreeFormNumber",
+        "label": "Phone",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "Balance",
+        "label": "Balance",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "BillAddr",
+        "label": "Billing Address",
+        "type": "address"
+      }
+    ]
+  ],
+  "list": [
+    [
+      {
+        "name": "CompanyName",
+        "label": "Company",
+        "type": "text"
+      },
+      {
+        "name": "PrimaryEmailAddr.Address",
+        "label": "Email",
+        "type": "text"
+      }
+    ]
+  ]
+}

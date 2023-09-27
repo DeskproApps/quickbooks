@@ -1,0 +1,106 @@
+{
+  "titleKeyName": "Id",
+  "idKey": "Id",
+  "externalUrl": "https://app.qbo.intuit.com/app/customerdetail?nameId=__Id__",
+  "internalChildUrl": "/view/single/Customer/",
+  "title": "Customer",
+  "create": [
+    {
+      "name": "GivenName",
+      "label": "Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "PrimaryEmailAddr.Address",
+      "label": "Email",
+      "type": "text"
+    },
+    {
+      "name": "PrimaryPhone.FreeFormNumber",
+      "label": "Phone",
+      "type": "number"
+    },
+    {
+      "name": "Suffix",
+      "label": "Suffix",
+      "type": "text"
+    },
+    {
+      "name": "BillAddr.Line1",
+      "label": "Address Line",
+      "type": "text"
+    },
+    {
+      "name": "BillAddr.PostalCode",
+      "label": "Postal Code",
+      "type": "text"
+    },
+    {
+      "name": "BillAddr.City",
+      "label": "City",
+      "type": "text"
+    },
+    {
+      "name": "BillAddr.CountrySubDivisionCode",
+      "label": "State/Region",
+      "type": "text"
+    },
+    {
+      "name": "BillAddr.Country",
+      "label": "Country",
+      "type": "text"
+    }
+  ],
+  "single": [
+    [
+      {
+        "name": "CompanyName",
+        "label": "Company",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryEmailAddr.Address",
+        "label": "Email",
+        "type": "key"
+      }
+    ],
+    [
+      {
+        "name": "PrimaryPhone.FreeFormNumber",
+        "label": "Phone",
+        "type": "key"
+      }
+    ],
+    [
+      {
+        "name": "Balance",
+        "label": "Balance",
+        "type": "currency"
+      }
+    ],
+    [
+      {
+        "name": "BillAddr",
+        "label": "Billing Address",
+        "type": "address"
+      }
+    ]
+  ],
+  "list": [
+    [
+      {
+        "name": "CompanyName",
+        "label": "Company",
+        "type": "text"
+      },
+      {
+        "name": "Balance",
+        "label": "Balance",
+        "type": "currency"
+      }
+    ]
+  ]
+}
