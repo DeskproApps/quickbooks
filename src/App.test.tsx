@@ -1,7 +1,6 @@
 import { render, waitFor } from "@testing-library/react";
 import App from "./App";
 import * as React from "react";
-import fetch from "node-fetch";
 
 jest.mock("@deskpro/app-sdk", () => ({
   ...jest.requireActual("@deskpro/app-sdk"),
