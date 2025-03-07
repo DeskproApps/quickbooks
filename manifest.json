@@ -1,7 +1,7 @@
 {
-  "name": "@deskpro-apps/my-app",
-  "title": "My App",
-  "description": "My Deskpro app",
+  "name": "@deskpro-apps/quickbooks",
+  "title": "QuickBooks",
+  "description": "QuickBooks app",
   "version": "0.0.12",
   "scope": "agent",
   "isSingleInstall": false,
