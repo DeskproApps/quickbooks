@@ -1,13 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
 import "./main.css";
+import "@deskpro/deskpro-ui/dist/deskpro-custom-icons.css";
+import "@deskpro/deskpro-ui/dist/deskpro-ui.css";
 import "simplebar/dist/simplebar.min.css";
+import { DeskproAppProvider, LoadingSpinner } from "@deskpro/app-sdk";
+import { ErrorBoundary } from "react-error-boundary";
+import { HashRouter } from "react-router-dom";
+import { queryClient } from "@/query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Scrollbar } from "@deskpro/deskpro-ui";
+import { StrictMode, Suspense } from "react";
+import App from "./App";
+import ReactDOM from "react-dom/client";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as Element);
 root.render((
-  <React.StrictMode>
-    <Scrollbar style={{height: "100%", width: "100%"}}><App /></Scrollbar>
-  </React.StrictMode>
+  <StrictMode>
+    <Scrollbar style={{ height: "100%", width: "100%" }} autoHide>
+      <DeskproAppProvider>
+        <HashRouter>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ErrorBoundary fallback={<>There was an error!</>}>
+                <App />
+              </ErrorBoundary>
+            </Suspense>
+          </QueryClientProvider>
+        </HashRouter>
+      </DeskproAppProvider>
+    </Scrollbar>
+  </StrictMode>
 ));
