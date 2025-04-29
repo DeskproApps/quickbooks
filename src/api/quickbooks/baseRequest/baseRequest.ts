@@ -1,7 +1,8 @@
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
+import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
+import { QuickBooksFaultError } from "@/types/quickbooks";
 import getQueryParams from "@/utils/getQueryParams";
 import type { RequestParams } from "@/types/api";
-import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
 
 
 /**
@@ -12,6 +13,7 @@ import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
  * @throws {QuickBooksError} If the HTTP status code indicates a failed request (not 2xx or 3xx).
  */
 export default async function baseRequest<T>(client: IDeskproClient, reqProps: RequestParams): Promise<T> {
+    
     const { endpoint, realmId, data, method = "GET", queryParams = {}, headers: customHeaders } = reqProps
 
     const dpFetch = await proxyFetch(client)
@@ -19,7 +21,7 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
     // Set the base URL based on the environment
     const baseUrl = IS_SANDBOX_ENVIRONMENT
         ? `https://sandbox-quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
-        : `https://quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`;
+        : `https://quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
     const params = getQueryParams(queryParams);
 
     const requestUrl = `${baseUrl}?${params}`;
@@ -57,8 +59,8 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
 }
 
 export type QuickBooksErrorPayload = {
-    statusCode: number;
-    data?: unknown; // @todo: Add types to handle errors better
+    statusCode: number
+    data?: unknown
 }
 
 export class QuickBooksError extends Error {
@@ -71,4 +73,18 @@ export class QuickBooksError extends Error {
         this.data = payload.data;
         this.statusCode = payload.statusCode
     }
+}
+
+export function isQuickBooksFaultError(data: unknown): data is QuickBooksFaultError {
+    if (typeof data !== "object" || data === null) {
+        return false
+    }
+
+    const maybeFault = (data as Record<string, unknown>)["Fault"] ?? (data as Record<string, unknown>)["fault"]
+
+    return (
+        typeof maybeFault === "object" &&
+        maybeFault !== null &&
+        typeof (maybeFault as Record<string, unknown>)["type"] === "string"
+    );
 }
