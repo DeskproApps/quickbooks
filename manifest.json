@@ -8,19 +8,58 @@
   "hasDevMode": true,
   "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
   "settings": {
-    "example": {
-      "title": "Example Setting",
-      "description": "Example backend only setting",
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
+      "type": "boolean",
+      "default": false,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 5
+    },
+    "company_id": {
+      "title": "Company ID",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": false,
+      "order": 10
+    },
+    "client_id": {
+      "title": "Client ID",
       "type": "string",
       "isRequired": false,
-      "isBackendOnly": true
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 20
+    },
+    "client_secret": {
+      "title": "Client Secret",
+      "type": "string",
+      "isRequired": false,
+      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 30
+    },
+    "callback_url": {
+      "title": "Callback URL",
+      "type": "app_embedded",
+      "options": { "entrypoint": "#/admin/callback", "height": "80px" },
+      "isRequired": false,
+      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 40
     }
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://sandbox-quickbooks.api.intuit.com/v3/company/.*",
+        "methods": ["GET", "POST"],
+        "timeout": 20
+      },
+      {
+        "url": "https://quickbooks.api.intuit.com/v3/company/.*",
+        "methods": ["GET", "POST"],
         "timeout": 20
       }
     ]
