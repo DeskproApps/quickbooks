@@ -7,16 +7,14 @@
   "isSingleInstall": false,
   "hasDevMode": true,
   "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "entityAssociations": {
+    "linkedQuickBooksCustomers": {
+      "entity": "person",
+      "type": "external_id",
+      "title": "QuickBooks Customer"
+    }
+  },
   "settings": {
-    "use_advanced_connect": {
-      "title": "Advanced Connect",
-      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
-      "type": "boolean",
-      "default": false,
-      "isRequired": false,
-      "isBackendOnly": false,
-      "order": 5
-    },
     "company_id": {
       "title": "Company ID",
       "type": "string",
@@ -27,17 +25,15 @@
     "client_id": {
       "title": "Client ID",
       "type": "string",
-      "isRequired": false,
+      "isRequired": true,
       "isBackendOnly": false,
-      "condition": "settings.use_advanced_connect != false",
       "order": 20
     },
     "client_secret": {
       "title": "Client Secret",
       "type": "string",
-      "isRequired": false,
+      "isRequired": true,
       "isBackendOnly": true,
-      "condition": "settings.use_advanced_connect != false",
       "order": 30
     },
     "callback_url": {
@@ -46,7 +42,6 @@
       "options": { "entrypoint": "#/admin/callback", "height": "80px" },
       "isRequired": false,
       "isBackendOnly": true,
-      "condition": "settings.use_advanced_connect != false",
       "order": 40
     }
   },
@@ -60,6 +55,11 @@
       {
         "url": "https://quickbooks.api.intuit.com/v3/company/.*",
         "methods": ["GET", "POST"],
+        "timeout": 20
+      },
+      {
+        "url": "https://oauth.platform.intuit.com/oauth2/v1/.*",
+        "methods": ["POST"],
         "timeout": 20
       }
     ]
