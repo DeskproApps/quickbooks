@@ -1,4 +1,5 @@
 export { default as baseRequest } from "./baseRequest"
 export { default as getCompanyInfo } from "./getCompanyInfo"
 export { default as getCustomerByEmail } from "./getCustomerByEmail"
+export { default as getCustomersByQuery } from "./getCustomersByQuery"
 export { default as getQuickBooksAccessToken } from "./getQuickBooksAccessToken"
