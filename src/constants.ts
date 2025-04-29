@@ -1,0 +1,1 @@
+export const IS_SANDBOX_ENVIRONMENT: boolean = true; // Set to false for production, NEVER push this as true
