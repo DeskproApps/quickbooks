@@ -19,7 +19,11 @@ export default async function getCustomerByEmail(client: IDeskproClient, params:
 
         const query = `SELECT * FROM Customer WHERE PrimaryEmailAddr = '${email}'`
 
-        const response = await baseRequest<QuickBooksCustomerResponse>(client, { realmId: companyId, endpoint: `/query?query=${encodeURIComponent(query)}` })
+        const response = await baseRequest<QuickBooksCustomerResponse>(client,
+            {
+                realmId: companyId,
+                endpoint: `query?query=${encodeURIComponent(query).replace(/'/g, "%27")}`
+            })
 
         const customer = response.QueryResponse.Customer[0] ?? null
         return customer

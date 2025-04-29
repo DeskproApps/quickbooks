@@ -18,13 +18,25 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
 
     const dpFetch = await proxyFetch(client)
 
+    // Check if the endpoint already contains query parameters
+    const hasRawQueryParams = endpoint.includes('?')
+
     // Set the base URL based on the environment
     const baseUrl = IS_SANDBOX_ENVIRONMENT
         ? `https://sandbox-quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
         : `https://quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
-    const params = getQueryParams(queryParams);
 
-    const requestUrl = `${baseUrl}?${params}`;
+    let requestUrl: string;
+    
+    if (hasRawQueryParams) {
+        // Ignore the queryParams if some are in the endpoint string
+        requestUrl = baseUrl
+    } else {
+        // If no query params, add the queryParams as usual
+        const params = getQueryParams(queryParams)
+        requestUrl = `${baseUrl}?${params}`
+    }
+
     const options: RequestInit = {
         method,
         body: data,
