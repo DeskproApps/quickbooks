@@ -1,10 +1,10 @@
 import { AdminCallbackPage } from "./pages/admin";
 import { Route, Routes } from "react-router-dom";
 import LoadingPage from "./pages/loading";
-import NotFoundPage from "./pages/not-found";
 import LoginPage from "./pages/login";
+import NotFoundPage from "./pages/not-found";
 
-function App() {
+export default function App() {
   return (
     <Routes>
       <Route index element={<LoadingPage />} />
@@ -16,4 +16,3 @@ function App() {
   );
 }
 
-export default App;
