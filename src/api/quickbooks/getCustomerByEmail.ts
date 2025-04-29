@@ -9,7 +9,7 @@ interface Params {
 
 interface QuickBooksCustomerResponse {
     QueryResponse: {
-        Customer: QuickBooksCustomer[]
+        Customer?: QuickBooksCustomer[]
     }
 }
 export default async function getCustomerByEmail(client: IDeskproClient, params: Params): Promise<QuickBooksCustomer | null> {
@@ -25,7 +25,7 @@ export default async function getCustomerByEmail(client: IDeskproClient, params:
                 endpoint: `query?query=${encodeURIComponent(query).replace(/'/g, "%27")}`
             })
 
-        const customer = response.QueryResponse.Customer[0] ?? null
+        const customer = response.QueryResponse.Customer?.[0] ?? null
         return customer
     } catch (e) {
         return null

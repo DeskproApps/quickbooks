@@ -17,7 +17,8 @@ export default async function tryToLinkCustomerAutomatically(client: IDeskproCli
     }
     const linkedCustomerIds = await getLinkedCustomerIds(client, deskproUser.id)
 
-    if (linkedCustomerIds.length <= 0) {
+    // If the user is already linked to a customer, do not attempt to link again
+    if (linkedCustomerIds.length > 0) {
         return
     }
 
