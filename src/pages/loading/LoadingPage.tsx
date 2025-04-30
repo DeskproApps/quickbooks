@@ -1,9 +1,10 @@
 import { ContextData, ContextSettings } from "@/types/deskpro";
 import { getCompanyInfo } from "@/api/quickbooks";
 import { getLinkedCustomerIds, tryToLinkCustomerAutomatically } from "@/api/deskpro";
-import { LoadingSpinner, useDeskproAppClient, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { LoadingSpinner, useDeskproAppClient, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useRegisterElements } from '@/hooks/useRegisterElements';
 
 export default function LoadingPage() {
     const { client } = useDeskproAppClient()
@@ -16,10 +17,9 @@ export default function LoadingPage() {
 
     const user = context?.data?.user
 
-    useDeskproElements(({ registerElement, clearElements }) => {
-        clearElements()
-        registerElement("refresh", { type: "refresh_button" })
-    })
+    useRegisterElements(({ registerElement }) => {
+        registerElement('refresh', { type: 'refresh_button' });
+    }, []);
 
     useInitialisedDeskproAppClient((client) => {
         client.setTitle("QuickBooks")

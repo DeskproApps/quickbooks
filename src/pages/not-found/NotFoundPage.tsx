@@ -1,15 +1,16 @@
 import { Button, H0, Stack } from "@deskpro/deskpro-ui"
 import { FC } from "react"
-import { useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
+import { useInitialisedDeskproAppClient } from '@deskpro/app-sdk'
 import { useNavigate } from "react-router-dom"
+import { useRegisterElements } from "@/hooks/useRegisterElements"
 
 
 const NotFoundPage: FC = () => {
     const navigate = useNavigate()
 
-    useDeskproElements(({ clearElements }) => {
-        clearElements()
-    })
+    useRegisterElements(({ registerElement }) => {
+        registerElement('refresh', { type: 'refresh_button' });
+    }, []);
 
     useInitialisedDeskproAppClient((client) => {
         client.setTitle("QuickBooks")
