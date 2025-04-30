@@ -56,8 +56,8 @@ export default function LoadingPage() {
                 if (linkedCustomerIds.length < 1) {
                     void navigate("/customers/link")
                 } else {
-                    void navigate("/customer/view")
-                }
+                    void navigate("/customers/view");
+                };
             })
             .catch(() => { void navigate("/customers/link") })
     } else {

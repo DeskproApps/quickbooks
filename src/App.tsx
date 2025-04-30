@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import LoadingPage from "./pages/loading";
 import LoginPage from "./pages/login";
 import NotFoundPage from "./pages/not-found";
-import { LinkCustomersPage } from "./pages/customers";
+import { LinkCustomersPage, ViewCustomersPage } from './pages/customers';
 import HomePage from "./pages/home/HomePage";
 import { useDeskproAppEvents } from '@deskpro/app-sdk';
 import { EventPayload } from './types/general';
@@ -31,6 +31,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/customers/link" element={<LinkCustomersPage />} />
+      <Route path="/customers/view" element={<ViewCustomersPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
