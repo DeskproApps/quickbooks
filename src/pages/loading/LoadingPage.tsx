@@ -4,6 +4,7 @@ import { getLinkedCustomerIds, tryToLinkCustomerAutomatically } from "@/api/desk
 import { LoadingSpinner, useDeskproAppClient, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import refreshAccessToken from "@/api/quickbooks/refreshAccessToken";
 
 export default function LoadingPage() {
     const { client } = useDeskproAppClient()
@@ -21,26 +22,34 @@ export default function LoadingPage() {
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
 
-    useInitialisedDeskproAppClient((client) => {
-        client.setTitle("QuickBooks")
+    useInitialisedDeskproAppClient(async client => {
+        client.setTitle('QuickBooks');
 
         if (!context || !user) {
-            return
-        }
+            return;
+        };
 
-        // Verify authentication status
-        getCompanyInfo(client, context.settings.company_id)
-            .then((user) => {
-                if (user) {
-                    setIsAuthenticated(true)
-                }
-            })
+        try {
+            const company = await getCompanyInfo(client, context.settings.company_id);
 
-            // eslint-disable-next-line no-console
-            .catch(() => { console.log("User not authenticated") })
-            .finally(() => {
-                setIsFetchingAuth(false)
-            })
+            if (company) {
+                setIsAuthenticated(true);
+            };
+        } catch (error) {
+            try {
+                await refreshAccessToken(client);
+                const company = await getCompanyInfo(client, context.settings.company_id);
+
+                if (company) {
+                    setIsAuthenticated(true);
+                };
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log('error authenticating user');
+            };
+        } finally {
+            setIsFetchingAuth(false);
+        };
     }, [context, context?.settings])
 
 
