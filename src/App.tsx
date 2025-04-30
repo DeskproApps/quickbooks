@@ -1,5 +1,5 @@
 import { AdminCallbackPage } from "./pages/admin";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import LoadingPage from "./pages/loading";
 import LoginPage from "./pages/login";
 import NotFoundPage from "./pages/not-found";
@@ -11,6 +11,7 @@ import { useLogOut } from './hooks/useLogOut';
 
 export default function App() {
   const { logOut } = useLogOut();
+  const navigate = useNavigate();
 
   useDeskproAppEvents({
     // @ts-ignore
@@ -18,6 +19,11 @@ export default function App() {
       switch (payload.type) {
         case 'logOut':
           logOut();
+
+          break;
+
+        case 'changePage':
+          navigate(payload.path);
 
           break;
       };

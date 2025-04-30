@@ -9,4 +9,5 @@ export interface ThemeProps {
 }
 
 export type EventPayload =
-    | {type: 'logOut'};
+    | {type: 'logOut'}
+    | {type: 'changePage', path: string};
