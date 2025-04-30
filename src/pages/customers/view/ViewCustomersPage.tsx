@@ -8,6 +8,8 @@ import { QuickBooksCustomer } from '@/types/quickbooks';
 import ErrorBlock from '@/components/ErrorBlock';
 import QuickBooksLogo from '@/components/QuickBooksLogo';
 import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P';
+import TextBlockWithLabel from '@/components/TextBlockWithLabel/TextBlockWithLabel';
+import TwoSider from '@/components/TwoSider/TwoSider';
 
 function ViewCustomersPage() {
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>();
@@ -67,9 +69,39 @@ function ViewCustomersPage() {
     return (
         <Container>
             <Title
-                title={customer?.DisplayName}
+                title={customer.DisplayName}
                 icon={<QuickBooksLogo />}
-                link='https://google.co.uk'
+                link={`https://qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
+            />
+            <TextBlockWithLabel
+                label='ID'
+                text={customer.Id}
+            />
+            <TextBlockWithLabel
+                label='Name'
+                text={`${customer.GivenName} ${customer.FamilyName}`}
+            />
+            <TwoSider
+                leftLabel='Balance'
+                leftText={`${customer.Balance} ${customer.CurrencyRef.value}`}
+                rightLabel='Balance with Jobs'
+                rightText={`${customer.BalanceWithJobs} ${customer.CurrencyRef.value}`}
+            />
+            <TextBlockWithLabel
+                label='Email'
+                text={customer.PrimaryEmailAddr.Address}
+            />
+            <TextBlockWithLabel
+                label='Phone'
+                text={customer.PrimaryPhone.FreeFormNumber}
+            />
+            <TextBlockWithLabel
+                label='Billing Address'
+                text={`${customer.BillAddr.Line1}, ${customer.BillAddr.City}, ${customer.BillAddr.CountrySubDivisionCode}, ${customer.BillAddr.PostalCode}`}
+            />
+            <TextBlockWithLabel
+                label='Shipping Address'
+                text={`${customer.ShipAddr.Line1}, ${customer.ShipAddr.City}, ${customer.ShipAddr.CountrySubDivisionCode}, ${customer.ShipAddr.PostalCode}`}
             />
         </Container>
     );

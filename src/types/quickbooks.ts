@@ -41,6 +41,13 @@ export interface QuickBooksCustomer {
       Lat: string;
       Long: string;
     };
+    ShipAddr: {
+      Id: string;
+      Line1: string;
+      City: string;
+      CountrySubDivisionCode: string;
+      PostalCode: string;
+    };
     Job: boolean;
     BillWithParent: boolean;
     Balance: number;
