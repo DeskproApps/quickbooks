@@ -7,3 +7,6 @@ export type Option<Value = unknown> = Omit<DropdownValueType<Value>, "subItems">
 export interface ThemeProps {
     theme: DeskproTheme;
 }
+
+export type EventPayload =
+    | {type: 'logOut'};

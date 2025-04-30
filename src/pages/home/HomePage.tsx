@@ -5,6 +5,17 @@ function HomePage() {
 
     useRegisterElements(({ registerElement }) => {
         registerElement('refresh', { type: 'refresh_button' });
+        registerElement('menu', {
+            type: 'menu',
+            items: [
+                {
+                    title: 'Log Out',
+                    payload: {
+                        type: 'logOut'
+                    }
+                }
+            ]
+        });
     }, []);
 
     return (

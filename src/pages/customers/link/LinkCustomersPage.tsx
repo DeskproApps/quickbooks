@@ -10,6 +10,7 @@ import { ThemeProps } from "@/types/general";
 import { useNavigate } from "react-router-dom";
 import QuickBooksLogo from "@/components/QuickBooksLogo";
 import styled from "styled-components";
+import { useRegisterElements } from '@/hooks/useRegisterElements';
 
 const RadioBox = styled(Radio)`
   width: 12px;
@@ -22,10 +23,24 @@ const Secondary: FC<PropsWithChildren<Omit<TProps, "type">> & {
 `;
 
 export default function LinkCustomersPage() {
-
     useInitialisedDeskproAppClient((client) => {
         client.setTitle("Link Customers")
     })
+
+    useRegisterElements(({ registerElement }) => {
+        registerElement('refresh', { type: 'refresh_button' });
+        registerElement('menu', {
+            type: 'menu',
+            items: [
+                {
+                    title: 'Log Out',
+                    payload: {
+                        type: 'logOut'
+                    }
+                }
+            ]
+        });
+    }, []);
 
     const navigate = useNavigate()
 

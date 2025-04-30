@@ -5,8 +5,25 @@ import LoginPage from "./pages/login";
 import NotFoundPage from "./pages/not-found";
 import { LinkCustomersPage } from "./pages/customers";
 import HomePage from "./pages/home/HomePage";
+import { useDeskproAppEvents } from '@deskpro/app-sdk';
+import { EventPayload } from './types/general';
+import { useLogOut } from './hooks/useLogOut';
 
 export default function App() {
+  const { logOut } = useLogOut();
+
+  useDeskproAppEvents({
+    // @ts-ignore
+    onElementEvent: (_, __, payload: EventPayload) => {
+      switch (payload.type) {
+        case 'logOut':
+          logOut();
+
+          break;
+      };
+    }
+  }, [logOut]);
+
   return (
     <Routes>
       <Route index element={<LoadingPage />} />
