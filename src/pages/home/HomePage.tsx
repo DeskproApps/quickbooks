@@ -1,9 +1,8 @@
-import { useRegisterElements } from '@/hooks/useRegisterElements';
+import { useDeskproElements } from '@deskpro/app-sdk';
 
 function HomePage() {
-
-
-    useRegisterElements(({ registerElement }) => {
+    useDeskproElements(({ clearElements, registerElement }) => {
+        clearElements();
         registerElement('refresh', { type: 'refresh_button' });
         registerElement('menu', {
             type: 'menu',

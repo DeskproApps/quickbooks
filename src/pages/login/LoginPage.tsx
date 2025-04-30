@@ -1,11 +1,11 @@
 import { AnchorButton, H3, Stack } from "@deskpro/deskpro-ui";
-import { useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
+import { useDeskproElements, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import ErrorBlock from "@/components/ErrorBlock";
 import useLogIn from "./useLogin";
-import { useRegisterElements } from '@/hooks/useRegisterElements';
 
 export default function LoginPage() {
-    useRegisterElements(({ registerElement }) => {
+    useDeskproElements(({ clearElements, registerElement }) => {
+            clearElements();
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
 

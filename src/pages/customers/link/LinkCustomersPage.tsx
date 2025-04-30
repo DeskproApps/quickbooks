@@ -1,6 +1,6 @@
 import { Button, P5, Radio, Stack, TProps, TSpan } from "@deskpro/deskpro-ui";
 import { ContextData, ContextSettings } from "@/types/deskpro";
-import { ExternalIconLink, HorizontalDivider, LoadingSpinner, Search, useDeskproAppClient, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { ExternalIconLink, HorizontalDivider, LoadingSpinner, Search, useDeskproAppClient, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { getCustomersByQuery } from "@/api/quickbooks";
 import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
@@ -10,7 +10,6 @@ import { ThemeProps } from "@/types/general";
 import { useNavigate } from "react-router-dom";
 import QuickBooksLogo from "@/components/QuickBooksLogo";
 import styled from "styled-components";
-import { useRegisterElements } from '@/hooks/useRegisterElements';
 
 const RadioBox = styled(Radio)`
   width: 12px;
@@ -27,7 +26,8 @@ export default function LinkCustomersPage() {
         client.setTitle("Link Customers")
     })
 
-    useRegisterElements(({ registerElement }) => {
+    useDeskproElements(({ clearElements, registerElement }) => {
+        clearElements();
         registerElement('refresh', { type: 'refresh_button' });
         registerElement('menu', {
             type: 'menu',
