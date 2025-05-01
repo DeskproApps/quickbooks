@@ -36,7 +36,7 @@ export default function App() {
       <Route path="/admin/callback" element={<AdminCallbackPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/home" element={<HomePage />} />
-      <Route path="/customers/link" element={<LinkCustomersPage />} />
+      {/* <Route path="/customers/link" element={<LinkCustomersPage />} /> */}
       <Route path="/customers/view" element={<ViewCustomersPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

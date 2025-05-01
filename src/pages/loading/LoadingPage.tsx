@@ -24,11 +24,11 @@ export default function LoadingPage() {
 
     useInitialisedDeskproAppClient(async client => {
         client.setTitle('QuickBooks');
-
+        
         if (!context || !user) {
             return;
         };
-
+        
         try {
             const company = await getCompanyInfo(client, context.settings.company_id);
 
@@ -63,12 +63,12 @@ export default function LoadingPage() {
             .then(() => getLinkedCustomerIds(client, user.id))
             .then((linkedCustomerIds) => {
                 if (linkedCustomerIds.length < 1) {
-                    void navigate("/customers/link")
+                    void navigate('/home');
                 } else {
                     void navigate("/customers/view");
                 };
             })
-            .catch(() => { void navigate("/customers/link") })
+            .catch(() => { void navigate('/home'); })
     } else {
         void navigate("/login")
     }

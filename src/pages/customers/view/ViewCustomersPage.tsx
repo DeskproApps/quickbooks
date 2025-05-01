@@ -26,7 +26,7 @@ function ViewCustomersPage() {
             type: 'home_button',
             payload: {
                 type: 'changePage',
-                path: '/'
+                path: '/home'
             }
         });
         registerElement('refresh', { type: 'refresh_button' });
@@ -48,7 +48,6 @@ function ViewCustomersPage() {
             };
 
             setCustomer(customer);
-            console.log('Customer:', customer);
         } catch (error) {
             setError(`error fetching customer: ${error}`);
         };

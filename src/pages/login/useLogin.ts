@@ -116,13 +116,13 @@ export default function useLogin(): UseLoginResult {
                     const linkedCustomerIds = await getLinkedCustomerIds(client, user.id)
 
                     if (linkedCustomerIds.length < 1) {
-                        void navigate("/customers/link")
+                        void navigate('/home');
                     } else {
                         void navigate("/customer/view")
                     }
 
                 } catch {
-                    void navigate("/customers/link")
+                    void navigate('/home');
                 }
 
 
