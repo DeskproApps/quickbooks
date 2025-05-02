@@ -37,7 +37,7 @@ export default function useLogin(): UseLoginResult {
         };
 
         const clientID = context.settings.client_id;
-        const mode = context?.settings.use_advanced_connect ? 'local' : 'global';
+        const mode = context.settings.use_advanced_connect ? 'local' : 'global';
 
         if (mode === 'local' && typeof clientID !== 'string') {
             return;

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { QuickBooksCustomer } from '@/types/quickbooks';
 import ErrorBlock from '@/components/ErrorBlock';
 import QuickBooksLogo from '@/components/QuickBooksLogo';
-import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P';
 import TextBlockWithLabel from '@/components/TextBlockWithLabel/TextBlockWithLabel';
 import TwoSider from '@/components/TwoSider/TwoSider';
 
@@ -32,6 +31,7 @@ function ViewCustomersPage() {
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         if (!context) {
             return;
@@ -49,7 +49,9 @@ function ViewCustomersPage() {
 
             setCustomer(customer);
         } catch (error) {
-            setError(`error fetching customer: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : 'unknown error';
+            
+            setError(`error fetching customer: ${errorMessage}`);
         };
     }, [context]);
 

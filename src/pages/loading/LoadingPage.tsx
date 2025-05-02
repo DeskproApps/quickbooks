@@ -23,6 +23,7 @@ export default function LoadingPage() {
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         client.setTitle('QuickBooks');
         

@@ -7,16 +7,17 @@ export function useLogOut() {
     const { client } = useDeskproAppClient();
     const navigate = useNavigate();
 
-    const logOut = useCallback(() => {
+    const logOut = useCallback(async () => {
         if (!client) {
             return;
         };
 
-        client.setBadgeCount(0);
-        revokeAccessToken(client)
-            .finally(() => {
-                navigate('/login');
-            });
+        try {
+            client.setBadgeCount(0);
+            await revokeAccessToken(client);
+        } finally {
+            void navigate('/login');
+        };
     }, [client, navigate]);
 
     return { logOut };

@@ -37,6 +37,7 @@ function HomePage() {
         });
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         if (!context) {
             return;
@@ -52,7 +53,9 @@ function HomePage() {
 
             customer && setCustomer(customer);
         } catch (error) {
-            setError(`error finding linked customer: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : 'unknown error';
+            
+            setError(`error finding linked customer: ${errorMessage}`);
         } finally {
             setIsLoading(false);
         };
@@ -63,7 +66,7 @@ function HomePage() {
             href='#'
             onClick={event => {
                 event.preventDefault();
-                navigate('/customers/view');
+                void navigate('/customers/view');
             }}
         >
             {title}
@@ -82,7 +85,7 @@ function HomePage() {
         );
     };
 
-    if (!customer) {
+    if (!customer?.Id) {
         return (
             <Container>
                 <p>No Linked Customer</p>
@@ -90,7 +93,7 @@ function HomePage() {
         );
     };
 
-    if (customer) {
+    if (customer.Id) {
         return (
             <Container>
                 <Title

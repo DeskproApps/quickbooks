@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import LoadingPage from "./pages/loading";
 import LoginPage from "./pages/login";
 import NotFoundPage from "./pages/not-found";
-import { LinkCustomersPage, ViewCustomersPage } from './pages/customers';
+import { ViewCustomersPage } from './pages/customers';
 import HomePage from "./pages/home/HomePage";
 import { useDeskproAppEvents } from '@deskpro/app-sdk';
 import { EventPayload } from './types/general';
@@ -14,16 +14,16 @@ export default function App() {
   const navigate = useNavigate();
 
   useDeskproAppEvents({
-    // @ts-ignore
+    // @ts-expect-error custom payload types
     onElementEvent: (_, __, payload: EventPayload) => {
       switch (payload.type) {
         case 'logOut':
-          logOut();
+          void logOut();
 
           break;
 
         case 'changePage':
-          navigate(payload.path);
+          void navigate(payload.path);
 
           break;
       };
@@ -36,7 +36,6 @@ export default function App() {
       <Route path="/admin/callback" element={<AdminCallbackPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/home" element={<HomePage />} />
-      {/* <Route path="/customers/link" element={<LinkCustomersPage />} /> */}
       <Route path="/customers/view" element={<ViewCustomersPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
