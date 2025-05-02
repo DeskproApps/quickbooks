@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeskproAppClient } from '@deskpro/app-sdk';
-import { placeholders } from '@/constants';
+import revokeAccessToken from '@/api/quickbooks/revokeAccessToken';
 
 export function useLogOut() {
     const { client } = useDeskproAppClient();
@@ -13,7 +13,7 @@ export function useLogOut() {
         };
 
         client.setBadgeCount(0);
-        client.deleteUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH)
+        revokeAccessToken(client)
             .finally(() => {
                 navigate('/login');
             });
