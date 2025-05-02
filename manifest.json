@@ -7,6 +7,7 @@
   "isSingleInstall": false,
   "hasDevMode": true,
   "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "secrets": "Ro+jUDXrqYABRH1jQ1N/WIh1olGlqOPLEACRLsBJ2tPvNNrkd+dGU2eDb2IVSdExDG64fiRfSvnVlTGFoeSr/sTVHWyW16C5ZbkHZJh1J3RRyWCElD/g7hpX40GJoax/1c+MsLUFYuvjHjkmZl4tIVv+sI6ttSEr/14dw8NE7vjR40+VDoj/xLHTD7stq971LH9SNuIRwpW0eqnl+Bz8aQzV7aAmuvHxcl/uIKbH11VBf1Ji3ToA3qJeRJSYX06wvDpoMc9zvRMbi8ou8EpQ6HTklzHqaCHYby64U2ociRirD4US0i+ZCa7k5trHLKGe49IZzbx4nuZsh63XOCkc/rS6O8m9uGV3k5Op7jNHu93nEsZ0rvqnBQgDDcgAL74gsm3BHU29YayobydTtSsGYFqKSfHis5YYMYDTx6Ocm1Kmn5KjWe9Dftmsz8HTs85oXFxoGsB/d1G2ad1WN8XeIb3dhpLS0bXFB5BER8y88F7YbWM7TwkRozh0z1tW9qvlWu67u12j7GqhMuVUg5I90zGWPF9YYqeW/eursn0WjYSx9FlhyKzZSRF7FoZ0QcOqzB2hsuTVM645Ia8EFn8qNau6NCcYN1AFRg2xveD5q1TAU5akDNtmX37Ru0LIaRHE8H4bmCBb2It7hfh6NkBEfyY6lWwV1VLs/HZKGZNr7PZsMjpipUqwJJabAzZnh3ZFQBB9NKBLjxloZqn1tk4igtFXJrIqKrLtnKsnMG3cfIfjUaI3VEAQBpol9p1mlrIoY7oznPA+2BJe0hcisislUCz3qjL8HFrf3fpytlPddoUvsTav4rp2dSqsXAhoPtFr78VVoZf8PgATHsNr1P1KlVWGOUvxfhAMuJuQlh8rsnEhr7s+gmeqNTpM6VqvDHOK0mED3olm1bnDsu53kumDoUqgQ86aagvqI0VeqI0ZUQUD1lq8/CKbbr6pdAReZFPPnT4FevukmWAnBLup2H9RYpWFqh+NVs+mX3q6/mntq8w6B3wKI5GGUB3hE4e3QIqY1bAbGlC/r60WzvLCyO3pYWctqRn1bm2a/dXVFAazy06svubSj7wRcVmeuXD8i3/Lx8UDcNApDp3v2scIAVRahzkY8b50lwzW13VgiU232v5NQofA755vgT+poM3TI0VmfUa9qE2WAt76DI1K72V6iWqdU0LRWcIULcFY1VfzfKexji984g8Zt/xZT6glLrUYR7DwojLW7bF7Pu0j40qDyg==",
   "entityAssociations": {
     "linkedQuickBooksCustomers": {
       "entity": "person",
@@ -15,34 +16,45 @@
     }
   },
   "settings": {
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "default": false,
+      "order": 1
+    },
     "company_id": {
       "title": "Company ID",
       "type": "string",
       "isRequired": true,
       "isBackendOnly": false,
-      "order": 10
+      "order": 2
     },
     "client_id": {
       "title": "Client ID",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": false,
-      "order": 20
+      "condition": "settings.use_advanced_connect == true",
+      "order": 3
     },
     "client_secret": {
       "title": "Client Secret",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": true,
-      "order": 30
+      "condition": "settings.use_advanced_connect == true",
+      "order": 4
     },
     "callback_url": {
       "title": "Callback URL",
       "type": "app_embedded",
       "options": { "entrypoint": "#/admin/callback", "height": "80px" },
       "isRequired": false,
-      "isBackendOnly": true,
-      "order": 40
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect == true",
+      "order": 5
     }
   },
   "proxy": {

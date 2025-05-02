@@ -1,7 +1,8 @@
 export interface ContextSettings {
-  client_id?: string
-  company_id: string
-}
+  use_advanced_connect: boolean;
+  company_id: string;
+  client_id?: string;
+};
 
 export type ContextData = {
   ticket?: {

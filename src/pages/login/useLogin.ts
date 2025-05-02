@@ -4,7 +4,7 @@ import { getCompanyInfo, getQuickBooksAccessToken } from '@/api/quickbooks';
 import { getLinkedCustomerIds, tryToLinkCustomerAutomatically } from '@/api/deskpro';
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { isQuickBooksFaultError, QuickBooksError } from '@/api/quickbooks/baseRequest/baseRequest';
-import { placeholders } from '@/constants';
+import { GLOBAL_CLIENT_ID, placeholders } from '@/constants';
 import { useCallback, useState } from 'react';
 
 interface UseLoginResult {
@@ -31,26 +31,24 @@ export default function useLogin(): UseLoginResult {
     // App SDK to to properly handle both async and sync functions
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    useInitialisedDeskproAppClient(async (client) => {
-        if (!user) {
-            // Make sure settings have loaded.
-            return
-        }
+    useInitialisedDeskproAppClient(async client => {
+        if (!context?.settings || !user) {
+            return;
+        };
 
-        const clientId = context.settings.client_id;
+        const clientID = context.settings.client_id;
+        const mode = context?.settings.use_advanced_connect ? 'local' : 'global';
 
+        if (mode === 'local' && typeof clientID !== 'string') {
+            return;
+        };
 
-        if (typeof clientId !== 'string' || clientId.trim() === "") {
-            // Local mode requires a clientId.
-            setError("A client ID is required");
-            return
-        }
         // Start OAuth process depending on the authentication mode
-        const oauth2Response = await client.startOauth2Local(
+        const oauth2Response = mode === 'global' ? await client.startOauth2Global(GLOBAL_CLIENT_ID) : await client.startOauth2Local(
             ({ state, callbackUrl }) => {
                 return `https://appcenter.intuit.com/connect/oauth2?${createSearchParams([
                     ["response_type", "code"],
-                    ["client_id", clientId],
+                    ["client_id", clientID || ''],
                     ["redirect_uri", callbackUrl],
                     ["scope", "openid profile email com.intuit.quickbooks.accounting"],
                     ["state", state],
@@ -74,9 +72,7 @@ export default function useLogin(): UseLoginResult {
 
         setAuthUrl(oauth2Response.authorizationUrl)
         setOAuth2Context(oauth2Response)
-
-
-    }, [setAuthUrl,])
+    }, [context, setAuthUrl]);
 
 
     useInitialisedDeskproAppClient((client) => {
