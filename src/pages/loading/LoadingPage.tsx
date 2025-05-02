@@ -5,6 +5,7 @@ import { LoadingSpinner, useDeskproAppClient, useDeskproElements, useDeskproLate
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import refreshAccessToken from "@/api/quickbooks/refreshAccessToken";
+import { placeholders } from '@/constants';
 
 export default function LoadingPage() {
     const { client } = useDeskproAppClient()
@@ -37,7 +38,14 @@ export default function LoadingPage() {
             };
         } catch (error) {
             try {
-                await refreshAccessToken(client);
+                const tokens = await refreshAccessToken(client);
+
+                await client.setUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH, tokens.access_token, { backend: true });
+
+                if (tokens.refresh_token) {
+                    await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, tokens.refresh_token, { backend: true });
+                };
+
                 const company = await getCompanyInfo(client, context.settings.company_id);
 
                 if (company) {
