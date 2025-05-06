@@ -63,8 +63,8 @@ export default function LinkCustomersPage() {
         });
     }, []);
 
-    useInitialisedDeskproAppClient((client) => {
-        const fetchCustomers = async () => {
+    useInitialisedDeskproAppClient(client => {
+        void (async () => {
             if (!searchQuery || searchQuery.trim().length < 3 || !context?.settings.company_id) {
                 setCustomers([])
                 return
@@ -90,12 +90,8 @@ export default function LinkCustomersPage() {
             } finally {
                 setIsFetchingCustomers(false)
             }
-        }
-
-        void fetchCustomers()
-
-    }, [searchQuery])
-
+        })();
+    }, [searchQuery]);
 
     const onLinkButtonClick = useCallback(() => {
         if (!client || !deskproUser?.id || !selectedCustomerId) {
