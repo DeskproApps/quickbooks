@@ -5,8 +5,8 @@ import { getCustomerByEmail } from '@/api/quickbooks';
 import { ContextData, ContextSettings } from '@/types/deskpro';
 import { useState } from 'react';
 import { QuickBooksCustomer } from '@/types/quickbooks';
-import ErrorBlock from '@/components/ErrorBlock';
-import QuickBooksLogo from '@/components/QuickBooksLogo';
+import ErrorBlock from '@/components/ErrorBlock/ErrorBlock';
+import QuickBooksLogo from '@/components/QuickBooksLogo/QuickBooksLogo';
 import TextBlockWithLabel from '@/components/TextBlockWithLabel/TextBlockWithLabel';
 import TwoSider from '@/components/TwoSider/TwoSider';
 

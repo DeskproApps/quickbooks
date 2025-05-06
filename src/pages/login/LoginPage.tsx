@@ -1,6 +1,6 @@
 import { AnchorButton, H3, Stack } from "@deskpro/deskpro-ui";
 import { useDeskproElements, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
-import ErrorBlock from "@/components/ErrorBlock";
+import ErrorBlock from "@/components/ErrorBlock/ErrorBlock";
 import useLogIn from "./useLogin";
 
 export default function LoginPage() {
