@@ -1,5 +1,6 @@
 export interface ContextSettings {
   use_advanced_connect: boolean;
+  use_sandbox: boolean;
   company_id: string;
   client_id?: string;
 };

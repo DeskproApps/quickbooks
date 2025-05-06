@@ -1,8 +1,8 @@
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
-import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
 import { QuickBooksFaultError } from "@/types/quickbooks";
 import getQueryParams from "@/utils/getQueryParams";
 import type { RequestParams } from "@/types/api";
+import { placeholders } from '@/constants';
 
 
 /**
@@ -13,7 +13,6 @@ import type { RequestParams } from "@/types/api";
  * @throws {QuickBooksError} If the HTTP status code indicates a failed request (not 2xx or 3xx).
  */
 export default async function baseRequest<T>(client: IDeskproClient, reqProps: RequestParams): Promise<T> {
-    
     const { endpoint, realmId, data, method = "GET", queryParams = {}, headers: customHeaders } = reqProps
 
     const dpFetch = await proxyFetch(client)
@@ -22,7 +21,7 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
     const hasRawQueryParams = endpoint.includes('?')
 
     // Set the base URL based on the environment
-    const baseUrl = IS_SANDBOX_ENVIRONMENT
+    const baseUrl = (await client.getUserState(placeholders.IS_USING_SANDBOX))[0].data === true
         ? `https://sandbox-quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
         : `https://quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
 

@@ -3,13 +3,13 @@ import { ContextData, ContextSettings } from "@/types/deskpro";
 import { ExternalIconLink, HorizontalDivider, LoadingSpinner, Search, useDeskproAppClient, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { getCustomersByQuery } from "@/api/quickbooks";
-import { IS_SANDBOX_ENVIRONMENT } from "@/constants";
 import { QuickBooksCustomer } from "@/types/quickbooks";
 import { setCustomerLink } from "@/api/deskpro";
 import { ThemeProps } from "@/types/general";
 import { useNavigate } from "react-router-dom";
 import QuickBooksLogo from "@/components/QuickBooksLogo/QuickBooksLogo";
 import styled from "styled-components";
+import { placeholders } from '@/constants';
 
 const RadioBox = styled(Radio)`
   width: 12px;
@@ -22,9 +22,30 @@ const Secondary: FC<PropsWithChildren<Omit<TProps, "type">> & {
 `;
 
 export default function LinkCustomersPage() {
-    useInitialisedDeskproAppClient((client) => {
-        client.setTitle("Link Customers")
-    })
+    const navigate = useNavigate()
+    const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
+    const { client } = useDeskproAppClient()
+    const deskproUser = context?.data?.user
+    const [searchQuery, setSearchQuery] = useState<string>("")
+    const [isFetchingCustomers, setIsFetchingCustomers] = useState<boolean>(false)
+    const [isLinkingCustomers, setIsLinkingCustomers] = useState<boolean>(false)
+    const [customers, setCustomers] = useState<QuickBooksCustomer[]>([])
+    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null)
+    const [isUsingSandbox, setIsUsingSandbox] = useState(false);
+
+    useInitialisedDeskproAppClient(client => {
+        client.setTitle('Link Customers');
+    });
+
+    useInitialisedDeskproAppClient(async client => {
+        if (!context) {
+            return;
+        };
+
+        const sandboxState = (await client.getUserState(placeholders.IS_USING_SANDBOX))[0].data === true;
+
+        setIsUsingSandbox(sandboxState);
+    }, []);
 
     useDeskproElements(({ clearElements, registerElement }) => {
         clearElements();
@@ -41,19 +62,6 @@ export default function LinkCustomersPage() {
             ]
         });
     }, []);
-
-    const navigate = useNavigate()
-
-    const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
-    const { client } = useDeskproAppClient()
-    const deskproUser = context?.data?.user
-
-
-    const [searchQuery, setSearchQuery] = useState<string>("")
-    const [isFetchingCustomers, setIsFetchingCustomers] = useState<boolean>(false)
-    const [isLinkingCustomers, setIsLinkingCustomers] = useState<boolean>(false)
-    const [customers, setCustomers] = useState<QuickBooksCustomer[]>([])
-    const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null)
 
     useInitialisedDeskproAppClient((client) => {
         const fetchCustomers = async () => {
@@ -167,14 +175,9 @@ export default function LinkCustomersPage() {
                                 </Stack>
                             </div>
 
-                            <ExternalIconLink href={`https://${IS_SANDBOX_ENVIRONMENT ? "sandbox" : "app"}.qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`} icon={<QuickBooksLogo />} />
-
-
-
-
+                            <ExternalIconLink href={`https://${isUsingSandbox ? 'sandbox.' : ''}qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`} icon={<QuickBooksLogo />} />
                         </Stack>)
                 })
         }
-
     </>)
-}
+};

@@ -30,6 +30,10 @@ export default function LoadingPage() {
         if (!context || !user) {
             return;
         };
+
+        const isUsingSandbox = context.settings.use_sandbox;
+
+        await client.setUserState(placeholders.IS_USING_SANDBOX, isUsingSandbox);
         
         try {
             const company = await getCompanyInfo(client, context.settings.company_id);
@@ -67,7 +71,6 @@ export default function LoadingPage() {
     }
 
     if (isAuthenticated) {
-
         tryToLinkCustomerAutomatically(client, { deskproUser: user, companyId: context.settings.company_id })
             .then(() => getLinkedCustomerIds(client, user.id))
             .then((linkedCustomerIds) => {
@@ -85,4 +88,4 @@ export default function LoadingPage() {
     return (
         <LoadingSpinner />
     );
-}
+};

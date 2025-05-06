@@ -1,17 +1,19 @@
+import { useState } from 'react';
 import { LoadingSpinner, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import Container from '@/components/Container/Container';
 import Title from '@/components/Title/Title';
-import { getCustomerByEmail } from '@/api/quickbooks';
-import { ContextData, ContextSettings } from '@/types/deskpro';
-import { useState } from 'react';
-import { QuickBooksCustomer } from '@/types/quickbooks';
 import ErrorBlock from '@/components/ErrorBlock/ErrorBlock';
 import QuickBooksLogo from '@/components/QuickBooksLogo/QuickBooksLogo';
 import TextBlockWithLabel from '@/components/TextBlockWithLabel/TextBlockWithLabel';
 import TwoSider from '@/components/TwoSider/TwoSider';
+import { getCustomerByEmail } from '@/api/quickbooks';
+import { placeholders } from '@/constants';
+import { ContextData, ContextSettings } from '@/types/deskpro';
+import { QuickBooksCustomer } from '@/types/quickbooks';
 
 function ViewCustomersPage() {
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>();
+    const [isUsingSandbox, setIsUsingSandbox] = useState(false);
     const [customer, setCustomer] = useState<QuickBooksCustomer>();
     const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +31,16 @@ function ViewCustomersPage() {
             }
         });
         registerElement('refresh', { type: 'refresh_button' });
+    }, []);
+
+    useInitialisedDeskproAppClient(async client => {
+        if (!context) {
+            return;
+        };
+
+        const sandboxState = (await client.getUserState(placeholders.IS_USING_SANDBOX))[0].data === true;
+
+        setIsUsingSandbox(sandboxState);
     }, []);
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -72,7 +84,7 @@ function ViewCustomersPage() {
             <Title
                 title={customer.DisplayName}
                 icon={<QuickBooksLogo />}
-                link={`https://qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
+                link={`https://${isUsingSandbox ? 'sandbox.' : ''}qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
             />
             <TextBlockWithLabel
                 label='ID'
