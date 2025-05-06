@@ -37,6 +37,7 @@ export default function LinkCustomersPage() {
         client.setTitle('Link Customers');
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         if (!context) {
             return;

@@ -33,6 +33,7 @@ function ViewCustomersPage() {
         registerElement('refresh', {type: 'refresh_button'});
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         if (!context) {
             return;
