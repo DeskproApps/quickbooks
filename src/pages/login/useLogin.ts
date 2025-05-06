@@ -105,23 +105,7 @@ export default function useLogin(): UseLoginResult {
                         throw new Error("Error authenticating user.")
                     })
 
-
-                try {
-                    await tryToLinkCustomerAutomatically(client, { deskproUser: user, companyId: context.settings.company_id });
-
-                    const linkedCustomerIds = await getLinkedCustomerIds(client, user.id)
-
-                    if (linkedCustomerIds.length < 1) {
-                        void navigate('/home');
-                    } else {
-                        void navigate("/customer/view")
-                    }
-
-                } catch {
-                    void navigate('/home');
-                }
-
-
+                void navigate('/');
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'Unknown error');
             } finally {
