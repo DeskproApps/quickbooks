@@ -8,7 +8,7 @@ import { QuickBooksCustomer } from "@/types/quickbooks";
 import { setCustomerLink } from "@/api/deskpro";
 import { ThemeProps } from "@/types/general";
 import { useNavigate } from "react-router-dom";
-import QuickBooksLogo from "@/components/QuickBooksLogo";
+import QuickBooksLogo from "@/components/QuickBooksLogo/QuickBooksLogo";
 import styled from "styled-components";
 
 const RadioBox = styled(Radio)`
