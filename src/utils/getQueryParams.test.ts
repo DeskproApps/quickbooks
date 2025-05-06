@@ -44,8 +44,11 @@ describe('getQueryParams', () => {
   });
 
   it('should return an empty string for unsupported data types', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
     expect(getQueryParams(123 as any)).toBe('');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
     expect(getQueryParams(true as any)).toBe('');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
     expect(getQueryParams(null as any)).toBe('');
   });
 });
