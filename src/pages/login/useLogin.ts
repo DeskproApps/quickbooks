@@ -1,7 +1,6 @@
 import { ContextData, ContextSettings } from '@/types/deskpro';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { getCompanyInfo, getQuickBooksAccessToken } from '@/api/quickbooks';
-import { getLinkedCustomerIds, tryToLinkCustomerAutomatically } from '@/api/deskpro';
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { isQuickBooksFaultError, QuickBooksError } from '@/api/quickbooks/baseRequest/baseRequest';
 import { GLOBAL_CLIENT_ID, placeholders } from '@/constants';
