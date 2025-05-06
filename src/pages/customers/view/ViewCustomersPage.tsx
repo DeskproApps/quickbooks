@@ -30,7 +30,7 @@ function ViewCustomersPage() {
                 path: '/home'
             }
         });
-        registerElement('refresh', { type: 'refresh_button' });
+        registerElement('refresh', {type: 'refresh_button'});
     }, []);
 
     useInitialisedDeskproAppClient(async client => {
@@ -65,7 +65,7 @@ function ViewCustomersPage() {
             
             setError(`error fetching customer: ${errorMessage}`);
         };
-    }, [context]);
+    }, [context?.settings.company_id, context?.data?.user?.primaryEmail]);
 
     if (error) {
         return (
