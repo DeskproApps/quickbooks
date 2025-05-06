@@ -10,3 +10,5 @@ export const placeholders = {
 };
 
 export const GLOBAL_CLIENT_ID = 'ABpCiIEzVcPumvRXiHIOe3F9RBwOm7GWbLjiEAbYf89CJ32rfu';
+
+export const SCOPE = 'com.intuit.quickbooks.accounting com.intuit.quickbooks.payment';
