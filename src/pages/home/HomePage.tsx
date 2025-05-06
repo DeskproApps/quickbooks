@@ -51,7 +51,7 @@ function HomePage() {
                 email: context.data?.user?.primaryEmail || '',
             });
 
-            customer && setCustomer(customer);
+            if (customer) setCustomer(customer);
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'unknown error';
             
@@ -93,25 +93,23 @@ function HomePage() {
         );
     };
 
-    if (customer.Id) {
-        return (
-            <Container>
-                <Title
-                    title={<ItemTitle title={customer.DisplayName} />}
-                    icon={<QuickBooksLogo />}
-                    link={`https://qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
-                />
-                <TextBlockWithLabel
-                    label='Name'
-                    text={`${customer.GivenName} ${customer.FamilyName}`}
-                />
-                <TextBlockWithLabel
-                    label='Email'
-                    text={customer.PrimaryEmailAddr.Address}
-                />
-            </Container>
-        );
-    };
+    return (
+        <Container>
+            <Title
+                title={<ItemTitle title={customer.DisplayName} />}
+                icon={<QuickBooksLogo />}
+                link={`https://qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
+            />
+            <TextBlockWithLabel
+                label='Name'
+                text={`${customer.GivenName} ${customer.FamilyName}`}
+            />
+            <TextBlockWithLabel
+                label='Email'
+                text={customer.PrimaryEmailAddr.Address}
+            />
+        </Container>
+    );
 };
 
 export default HomePage;
