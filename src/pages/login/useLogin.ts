@@ -3,7 +3,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
 import { getCompanyInfo, getQuickBooksAccessToken } from '@/api/quickbooks';
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { isQuickBooksFaultError, QuickBooksError } from '@/api/quickbooks/baseRequest/baseRequest';
-import { GLOBAL_CLIENT_ID, placeholders } from '@/constants';
+import { GLOBAL_CLIENT_ID, placeholders, SCOPE } from '@/constants';
 import { useCallback, useState } from 'react';
 
 interface UseLoginResult {
@@ -49,7 +49,7 @@ export default function useLogin(): UseLoginResult {
                     ["response_type", "code"],
                     ["client_id", clientID || ''],
                     ["redirect_uri", callbackUrl],
-                    ["scope", "openid profile email com.intuit.quickbooks.accounting"],
+                    ['scope', SCOPE],
                     ["state", state],
                 ]).toString()}`;
             },
