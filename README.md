@@ -27,7 +27,7 @@
 QuickBooks simplifies financial management for businesses. With Deskpro's QuickBooks integration, agents can seamlessly access customer data, ensuring efficient workflows and enhanced user interactions.
 
 ## **Setting up the app in Deskpro**
-You can follow our [setup guide](./SETUP.md) for a step-by-step guide to setting up the Asana app in Deskpro.
+You can follow our [setup guide](./SETUP.md) for a step-by-step guide to setting up the QuickBooks app in Deskpro.
 
 ## Development
 
@@ -63,7 +63,7 @@ To run this project locally:
 git clone https://github.com/DeskproApps/quickbooks.git
 
 # Change to the project directory
-cd asana
+cd quickbooks
 
 # Install dependencies
 pnpm install
@@ -91,7 +91,7 @@ Every app deployment requires that the version property in the `manifest.json` f
 * **Major** versions, i.e. 2.0.0, are incremented if you add the `major-version` GitHub label to your PR
 
 ## Top Contributors
-[![Contributors](https://contrib.rocks/image?repo=deskproapps/asana)](https://github.com/deskproapps/asana/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=deskproapps/quickbooks)](https://github.com/deskproapps/quickbooks/graphs/contributors)
 
 
 ## License
