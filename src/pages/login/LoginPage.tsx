@@ -19,7 +19,7 @@ export default function LoginPage() {
 
     return (
         <Stack vertical gap={12} padding={12}>
-            <H3>Log into your QuickBooks account.</H3>
+            <H3>Log into your QuickBooks account</H3>
             <AnchorButton
                 disabled={!authUrl || isLoading}
                 href={authUrl ?? "#"}
