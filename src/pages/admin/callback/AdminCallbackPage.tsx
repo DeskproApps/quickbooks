@@ -26,7 +26,7 @@ function AdminCallbackPage() {
                         ['state', state],
                         ['response_type', 'code'],
                         ['redirect_uri', callbackUrl],
-                        ['scope', SCOPE],
+                        ['scope', SCOPE]
                     ]).toString()}`;
                 },
                 /^$/,
