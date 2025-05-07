@@ -71,13 +71,7 @@ function HomePage() {
     }, [context]);
 
     const ItemTitle = ({ title }: {title: string}) => (
-        <Link
-            href='#'
-            onClick={event => {
-                event.preventDefault();
-                void navigate('/customers/view');
-            }}
-        >
+        <Link href='#/customers/view'>
             {title}
         </Link>
     );
