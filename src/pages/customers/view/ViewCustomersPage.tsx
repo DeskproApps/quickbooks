@@ -46,14 +46,14 @@ function ViewCustomersPage() {
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
-        if (!context) {
+        if (!context || !context.data?.user?.primaryEmail) {
             return;
         };
 
         try {
             const customer = await getCustomerByEmail(client, {
                 companyId: context.settings.company_id,
-                email: context.data?.user?.primaryEmail || '',
+                email: context.data.user.primaryEmail
             });
 
             if (!customer) {
