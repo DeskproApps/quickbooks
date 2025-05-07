@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Link, LoadingSpinner, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import Container from '@/components/Container/Container';
 import ErrorBlock from '@/components/ErrorBlock/ErrorBlock';
@@ -13,7 +12,6 @@ import { QuickBooksCustomer } from '@/types/quickbooks';
 
 function HomePage() {
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>();
-    const navigate = useNavigate();
     const [isUsingSandbox, setIsUsingSandbox] = useState(false);
     const [customer, setCustomer] = useState<QuickBooksCustomer>();
     const [isLoading, setIsLoading] = useState(false);

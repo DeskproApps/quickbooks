@@ -88,7 +88,7 @@ export default function LinkCustomersPage() {
                 setIsFetchingCustomers(false)
             }
         })();
-    }, [searchQuery]);
+    }, [searchQuery, context?.settings.company_id]);
 
     const onLinkButtonClick = useCallback(() => {
         if (!client || !deskproUser?.id || !selectedCustomerId) {
@@ -103,9 +103,7 @@ export default function LinkCustomersPage() {
             .finally(() => {
                 setIsLinkingCustomers(false)
             })
-
-
-    }, [client, deskproUser?.id, navigate, selectedCustomerId])
+    }, [client, deskproUser?.id, selectedCustomerId, navigate])
 
     const onCancelButtonClick = useCallback(() => {
         void navigate("/customer/view")
