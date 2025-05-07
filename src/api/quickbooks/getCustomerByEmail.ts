@@ -30,10 +30,4 @@ export default async function getCustomerByEmail(client: IDeskproClient, params:
     } catch (e) {
         return null
     }
-
-
-
-
-
-
-}
+};
