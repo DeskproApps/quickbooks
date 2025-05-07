@@ -1,7 +1,7 @@
 {
   "name": "@deskpro-apps/quickbooks",
   "title": "QuickBooks",
-  "description": "QuickBooks app",
+  "description": "View your QuickBooks customers linked with Deskpro tickets to streamline financial workflows and improve user interactions.",
   "version": "0.0.15",
   "scope": "agent",
   "isSingleInstall": false,
