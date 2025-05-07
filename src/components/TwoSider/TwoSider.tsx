@@ -1,23 +1,16 @@
-import styled from 'styled-components';
-import { DeskproTheme } from '@deskpro/deskpro-ui';
+import { ReactNode } from 'react';
+import { useDeskproAppTheme } from '@deskpro/app-sdk';
 import TextBlockWithLabel, { ITextBlockWithLabel } from '../TextBlockWithLabel/TextBlockWithLabel';
 
-const Container = styled.div`
-    margin-bottom: -1px;
-`;
+interface Side {
+    children: ReactNode;
+};
 
-const Side = styled.div`
-    display: inline-block;
-    width: calc(49% - 6px);
-`;
-
-const Divider = styled.div`
-    display: inline-block;
-    width: 1px;
-    height: 2em;
-    margin: 0 6px;
-    background-color: ${({ theme }) => (theme as DeskproTheme).colors.grey20};
-`;
+const Side = ({ children }: Side) => (
+    <div style={{display: 'inline-block', width: 'calc(49% - 6px)'}}>
+        {children}
+    </div>
+);
 
 interface TwoSider {
     leftLabel: ITextBlockWithLabel['label'];
@@ -27,22 +20,32 @@ interface TwoSider {
 };
 
 function TwoSider({ leftLabel, leftText, rightLabel, rightText }: TwoSider) {
+    const { theme } = useDeskproAppTheme();
+
     return (
-        <Container>
+        <div style={{marginBottom: '-1px'}}>
             <Side>
                 <TextBlockWithLabel
                     label={leftLabel}
                     text={leftText}
                 />
             </Side>
-            <Divider />
+            <div
+                style={{
+                    display: 'inline-block',
+                    width: '1px',
+                    height: '2em',
+                    margin: '0 6px',
+                    backgroundColor: theme.colors.grey20
+                }}
+            />
             <Side>
                 <TextBlockWithLabel
                     label={rightLabel}
                     text={rightText}
                 />
             </Side>
-        </Container>
+        </div>
     );
 };
 
