@@ -4,7 +4,6 @@ import { getLinkedCustomerIds, tryToLinkCustomerAutomatically } from "@/api/desk
 import { LoadingSpinner, useDeskproAppClient, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from '@deskpro/app-sdk';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import refreshAccessToken from "@/api/quickbooks/refreshAccessToken";
 import { placeholders } from '@/constants';
 
 export default function LoadingPage() {
@@ -26,7 +25,7 @@ export default function LoadingPage() {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         client.setTitle('QuickBooks');
-        
+
         if (!context || !user) {
             return;
         };
@@ -34,7 +33,7 @@ export default function LoadingPage() {
         const isUsingSandbox = context.settings.use_sandbox;
 
         await client.setUserState(placeholders.IS_USING_SANDBOX, isUsingSandbox);
-        
+
         try {
             const company = await getCompanyInfo(client, context.settings.company_id);
 
@@ -42,32 +41,16 @@ export default function LoadingPage() {
                 setIsAuthenticated(true);
             };
         } catch (error) {
-            try {
-                const tokens = await refreshAccessToken(client);
-
-                await client.setUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH, tokens.access_token, { backend: true });
-
-                if (tokens.refresh_token) {
-                    await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, tokens.refresh_token, { backend: true });
-                };
-
-                const company = await getCompanyInfo(client, context.settings.company_id);
-
-                if (company) {
-                    setIsAuthenticated(true);
-                };
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.log('error authenticating user');
-            };
+            // eslint-disable-next-line no-console
+            console.log('error authenticating user');
         } finally {
             setIsFetchingAuth(false);
         };
-    }, [context, context?.settings])
+    }, [context, context?.settings]);
 
 
     if (!client || !user || isFetchingAuth) {
-        return (<LoadingSpinner />)
+        return <LoadingSpinner />
     }
 
     if (isAuthenticated) {
@@ -85,7 +68,5 @@ export default function LoadingPage() {
         void navigate("/login")
     }
 
-    return (
-        <LoadingSpinner />
-    );
+    return <LoadingSpinner />
 };

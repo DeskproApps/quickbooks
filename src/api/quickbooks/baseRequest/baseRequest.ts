@@ -3,7 +3,7 @@ import { QuickBooksFaultError } from "@/types/quickbooks";
 import getQueryParams from "@/utils/getQueryParams";
 import type { RequestParams } from "@/types/api";
 import { placeholders } from '@/constants';
-
+import refreshAccessToken from '../refreshAccessToken';
 
 /**
  * Wrapper fetch function for requests to the QuickBooks API.
@@ -26,7 +26,7 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
         : `https://quickbooks.api.intuit.com/v3/company/${realmId}/${endpoint}`
 
     let requestUrl: string;
-    
+
     if (hasRawQueryParams) {
         // Ignore the queryParams if some are in the endpoint string
         requestUrl = baseUrl
@@ -40,14 +40,35 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
         method,
         body: data,
         headers: {
-            "Authorization": "Bearer [user[oauth2/access_token]]",
+            "Authorization": `Bearer ${placeholders.OAUTH2_ACCESS_TOKEN_PATH}`,
             "Accept": "application/json",
             ...customHeaders,
             ...(data ? { "Content-Type": "application/json" } : {}),
         },
-    }
+    };
 
-    const res = await dpFetch(requestUrl, options);
+    let res = await dpFetch(requestUrl, options);
+
+    if (res.status === 401) {
+        try {
+            const tokens = await refreshAccessToken(client);
+
+            await client.setUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH, tokens.access_token, {backend: true});
+
+            if (tokens.refresh_token) {
+                await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, tokens.refresh_token, {backend: true});
+            };
+
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${tokens.access_token}`
+            };
+
+            res = await dpFetch(requestUrl, options);
+        } catch (refreshError) {
+            throw new QuickBooksError('failed to refresh access token', {statusCode: 401, data: refreshError});
+        };
+    };
 
     if (res.status < 200 || res.status > 399) {
         let errorData: unknown;
@@ -98,4 +119,4 @@ export function isQuickBooksFaultError(data: unknown): data is QuickBooksFaultEr
         maybeFault !== null &&
         typeof (maybeFault as Record<string, unknown>)["type"] === "string"
     );
-}
+};
