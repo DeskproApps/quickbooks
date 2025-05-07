@@ -7,12 +7,14 @@ import Title from '@/components/Title/Title';
 import QuickBooksLogo from '@/components/QuickBooksLogo/QuickBooksLogo';
 import TextBlockWithLabel from '@/components/TextBlockWithLabel/TextBlockWithLabel';
 import { getCustomerByEmail } from '@/api/quickbooks';
+import { placeholders } from '@/constants';
 import { ContextData, ContextSettings } from '@/types/deskpro';
 import { QuickBooksCustomer } from '@/types/quickbooks';
 
 function HomePage() {
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>();
     const navigate = useNavigate();
+    const [isUsingSandbox, setIsUsingSandbox] = useState(false);
     const [customer, setCustomer] = useState<QuickBooksCustomer>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -35,6 +37,17 @@ function HomePage() {
                 }
             ]
         });
+    }, []);
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    useInitialisedDeskproAppClient(async client => {
+        if (!context) {
+            return;
+        };
+
+        const sandboxState = (await client.getUserState(placeholders.IS_USING_SANDBOX))[0].data === true;
+
+        setIsUsingSandbox(sandboxState);
     }, []);
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -98,7 +111,7 @@ function HomePage() {
             <Title
                 title={<ItemTitle title={customer.DisplayName} />}
                 icon={<QuickBooksLogo />}
-                link={`https://qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
+                link={`https://${isUsingSandbox ? 'sandbox.' : ''}qbo.intuit.com/app/customerdetail?nameId=${customer.Id}`}
             />
             <TextBlockWithLabel
                 label='Name'
