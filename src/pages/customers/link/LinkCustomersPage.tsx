@@ -103,7 +103,7 @@ export default function LinkCustomersPage() {
 
         setCustomerLink(client, { userId: deskproUser.id, customerId: selectedCustomerId })
             .then(() => { void navigate("/customer/view") })
-            .catch(() => { { void navigate("/customer/view") } })
+            .catch(() => { { void navigate('/') } })
             .finally(() => {
                 setIsLinkingCustomers(false)
             })
