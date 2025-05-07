@@ -35,10 +35,6 @@ function ViewCustomersPage() {
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
-        if (!context) {
-            return;
-        };
-
         const sandboxState = (await client.getUserState(placeholders.IS_USING_SANDBOX))[0].data === true;
 
         setIsUsingSandbox(sandboxState);
