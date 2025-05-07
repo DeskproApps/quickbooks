@@ -142,7 +142,7 @@ export default function LinkCustomersPage() {
 
             customers.length === 0
                 ? (
-                    <div style={{ padding: 12 }}>No customers found</div>
+                    <div style={{ padding: '12px' }}>No customers found</div>
                 ) :
                 customers.map((customer) => {
                     return (
