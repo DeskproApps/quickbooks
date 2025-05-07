@@ -1,4 +1,4 @@
 QuickBooks
 ======
 
-todo: add a description that will appear alongside your app in Deskpro admin
+***Link Customers to Tickets:*** Linking QuickBooks customers to tickets allows users to seamlessly track and manage billing information.
