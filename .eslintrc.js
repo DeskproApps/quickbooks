@@ -2,12 +2,12 @@ module.exports = {
   root: true,
   ignorePatterns: ["**/*.js", ".dist/**/*", "build/**/*", "dist/**/*"],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  plugins: ['@typescript-eslint', 'react-hooks'],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:react-hooks/recommended",
-    "prettier",
+    "prettier"
   ],
   rules: {
     "@typescript-eslint/no-empty-function": "warn",
@@ -16,6 +16,7 @@ module.exports = {
       "warn",
       { ignoreRestSiblings: true, argsIgnorePattern: "^_" },
     ],
+    'react-hooks/exhaustive-deps': 'warn'
   },
   parserOptions: {
     project: "./tsconfig.json"
