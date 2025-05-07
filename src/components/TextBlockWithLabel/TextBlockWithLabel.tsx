@@ -1,7 +1,8 @@
 import { isValidElement, ReactElement } from 'react';
 import styled from 'styled-components';
 import DOMPurify from 'dompurify';
-import { DeskproTheme, P5, P8, Stack } from '@deskpro/deskpro-ui';
+import { P5, P8, Stack } from '@deskpro/deskpro-ui';
+import { ThemeProps } from '@/types/general';
 
 export interface ITextBlockWithLabel {
     marginBottom?: number;
@@ -19,7 +20,7 @@ const Container = styled.div<ITextBlockWithLabel>`
 `;
 
 const Label = styled(P8)`
-    color: ${({ theme }) => (theme as DeskproTheme).colors.grey80};
+    color: ${({ theme }: ThemeProps) => theme.colors.grey80};
 `;
 
 function sanitiseHTML(text: string | number | ReactElement) {
