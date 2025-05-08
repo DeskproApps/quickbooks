@@ -8,6 +8,6 @@ export const placeholders = {
     IS_USING_SANDBOX: 'is_using_sandbox',
 };
 
-export const GLOBAL_CLIENT_ID = 'ABpCiIEzVcPumvRXiHIOe3F9RBwOm7GWbLjiEAbYf89CJ32rfu';
+export const GLOBAL_CLIENT_ID = 'ABvWsXjB1yre80UrAXj7uDaWUOWPiW7CZ04t0BJgM75UJZYxJ8';
 
-export const SCOPE = 'com.intuit.quickbooks.accounting com.intuit.quickbooks.payment';
+export const SCOPE = 'com.intuit.quickbooks.accounting';
