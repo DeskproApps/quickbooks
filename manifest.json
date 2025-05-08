@@ -1,26 +1,92 @@
 {
   "name": "@deskpro-apps/quickbooks",
   "title": "QuickBooks",
-  "description": "QuickBooks app",
+  "description": "View your QuickBooks customers linked with Deskpro tickets to streamline financial workflows and improve user interactions.",
   "version": "0.0.15",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
-  "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
+  "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "secrets": "qsmekPQ7vzoyMt6TG9a6N4J9xc6vIOh+eJbvCVH4s1fyOm6ytN5bBw+NTIkpEF11xr5gGhf0gvQZ8tuop9fClT8hKBpeu3W/QHx99y26AKH+OBwwDrN0/qTuyNDZ5N4J5pZktnWg/tAGbvWRNMhkXdbYJjDAIaacwJICxTAOuC2yS3oWT1cy4elaaUQbMPNpzyzpWvGjulCRkuxl6gJkMl6Hl9CG5AgjpLnI5tnzgcIKrWThb4mKxRAKN6yxhEqi1GE4qbdjlOVCVd/4qeZiqhXFJr6y8p5QKjWKbPol1AZcBFH7ZoSQgtf1+5W0uw03mNs5OmL8fbgeOGn+qPPhPHD7b4XKs7WFMq1RPIkLdzheMR1cPXRp6TLW1IQArEw9za7Vt/85qx2mzty3vfgwpElArEHw/U6iCnlGRNbBdBnonP4FQT6TdINLl2S7DK63PbmzFXj1Em9Orb/0SYEaP79SlNHnatVqvGou5AqaayIGicsu6huszThPpzkdug8Ve7Ik+/bsXW/Z5qNWr1OxNdl88+lqzhCPeWYhiROjxtmPCHbbqa9x3teTiGXEcpB/EH4/9UOHd/IFP4tHnSujvk2pP/3fq+Or7kzIhhhamlk3Elb7J5PLj+6Ls7XFWLDfxRuMaOrYRfLPwFoD7AYFzaizdHu5zmeXffvk/xlowfdygqnqGlcENeRB2rFxYPlm8xDNKI8OfwlbYIajZ1T8D1elnTfaP8j0A3TocYwK45rsbjOVFCV2aMbA9RHuhQZ/XLEpaF5eLpDPxU8dFnTjAESX4as3AxA2MIW+A7BxWtRNtcJqgpMtKKDtUamyYS09TeLV5EcOqFKaCbUBB4avB0n1HjSbvrWr0p+0UhpUFuy+CSOHkXO3OeEMRziVz5Gz33jplru0ZPGvrA6kKXyi3Ovs1K5gQTdQaFHab4FNsFY34hAjUCcJthpHb1n1QFH8a7JI5cTMpsfRMcJV3bTq+KWbTBJ5siSdlu2l91leynNU9nB8a7dTa/V5lh/cJXJ6/v/Xuc70zq1VaV/0JrvbAykY6pZansNpZMD6pAcgwgQNnmfsnsnp12S/ypWfJtD/PlAOFuhJ97vfzidCibBj5AkJR9qQipOCvtGAnABbWKZc5TP02eEhBT/dSnjXb7GJeR7V/X0tYr/SovhjMt9PyBL3qy2tmDm+gHiacC02cD0rjvh/AfgJUctYfNpay+Z3",
+  "entityAssociations": {
+    "linkedQuickBooksCustomers": {
+      "entity": "person",
+      "type": "external_id",
+      "title": "QuickBooks Customer"
+    }
+  },
   "settings": {
-    "example": {
-      "title": "Example Setting",
-      "description": "Example backend only setting",
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "default": false,
+      "order": 1
+    },
+    "use_sandbox": {
+      "title": "Use Sandbox",
+      "description": "Check if using QuickBooks sandbox",
+      "type": "boolean",
+      "isRequired": false,
+      "isBackendOnly": false,
+      "default": false,
+      "order": 2
+    },
+    "company_id": {
+      "title": "Company ID",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": false,
+      "order": 3
+    },
+    "client_id": {
+      "title": "Client ID",
       "type": "string",
       "isRequired": false,
-      "isBackendOnly": true
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect == true",
+      "order": 4
+    },
+    "client_secret": {
+      "title": "Client Secret",
+      "type": "string",
+      "isRequired": false,
+      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect == true",
+      "order": 5
+    },
+    "callback_url": {
+      "title": "Callback URL",
+      "type": "app_embedded",
+      "options": { "entrypoint": "#/admin/callback", "height": "80px" },
+      "isRequired": false,
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect == true",
+      "order": 6
     }
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://sandbox-quickbooks.api.intuit.com/v3/company/.*",
+        "methods": ["GET", "POST"],
+        "timeout": 20
+      },
+      {
+        "url": "https://quickbooks.api.intuit.com/v3/company/.*",
+        "methods": ["GET", "POST"],
+        "timeout": 20
+      },
+      {
+        "url": "https://oauth.platform.intuit.com/oauth2/v1/.*",
+        "methods": ["POST"],
+        "timeout": 20
+      },
+      {
+        "url": "https://developer.api.intuit.com/v2/oauth2/tokens/revoke",
+        "methods": ["POST"],
         "timeout": 20
       }
     ]
