@@ -5,7 +5,7 @@ import useLogIn from "./useLogin";
 
 export default function LoginPage() {
     useDeskproElements(({ clearElements, registerElement }) => {
-            clearElements();
+        clearElements();
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
 
