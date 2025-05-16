@@ -15,7 +15,7 @@ interface UseLoginResult {
 
 export default function useLogin(): UseLoginResult {
     const [authUrl, setAuthUrl] = useState<string | null>(null)
-    const [error, setError] = useState<null | string>(null)
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false)
     const [isPolling, setIsPolling] = useState(false)
     const [oauth2Context, setOAuth2Context] = useState<IOAuth2 | null>(null)
@@ -89,24 +89,23 @@ export default function useLogin(): UseLoginResult {
                     await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, result.data.refresh_token, { backend: true })
                 }
 
-                getCompanyInfo(client, context.settings.company_id)
-                    .catch((e) => {
-                        if (e instanceof QuickBooksError && isQuickBooksFaultError(e.data)) {
-                            const fault = e.data.Fault ?? e.data.fault
+                try {
+                    await getCompanyInfo(client, context.settings.company_id);
+                    void navigate('/');
+                } catch (error) {
+                    if (error instanceof QuickBooksError && isQuickBooksFaultError(error.data)) {
+                        const fault = error.data.Fault ?? error.data.fault;
 
-
-                            if (fault?.type === "AuthorizationFault") {
-                                throw new Error("The used in logging in isn't a part of the company specified in the app setup. Contact your admin for more information")
-                            }
+                        if (fault?.type === "AuthorizationFault") {
+                            throw new Error("The user logging in isn't a part of the company specified in the app setup. Contact your admin for more information");
                         }
+                    };
 
-                        // Generic error for all other errors
-                        throw new Error("Error authenticating user.")
-                    })
-
-                void navigate('/');
+                    // generic error for all other errors
+                    throw new Error('error authenticating user. Are you using a sandbox company (double-check on QuickBooks, and the settings drawer of the QuickBooks app in Deskpro)?');
+                };
             } catch (error) {
-                setError(error instanceof Error ? error.message : 'Unknown error');
+                setError(error instanceof Error ? error.message : 'unknown error');
             } finally {
                 setIsLoading(false)
                 setIsPolling(false)
@@ -116,7 +115,7 @@ export default function useLogin(): UseLoginResult {
         if (isPolling) {
             void startPolling()
         }
-    }, [isPolling, user, oauth2Context, navigate])
+    }, [isPolling, user, oauth2Context, navigate, context?.settings.company_id]);
 
     const onSignIn = useCallback(() => {
         setIsLoading(true);
@@ -126,4 +125,4 @@ export default function useLogin(): UseLoginResult {
 
     return { authUrl, onSignIn, error, isLoading }
 
-}
+};

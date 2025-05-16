@@ -33,6 +33,7 @@
       "isRequired": false,
       "isBackendOnly": false,
       "default": false,
+      "condition": "settings.use_advanced_connect == true",
       "order": 2
     },
     "company_id": {
