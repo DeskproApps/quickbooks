@@ -13,6 +13,8 @@ export interface ITextBlockWithLabel {
 
 const HTMLContent = styled.div`
     font-size: 11px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 `;
 
 const Container = styled.div<ITextBlockWithLabel>`
