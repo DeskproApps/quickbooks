@@ -107,11 +107,21 @@ function ViewCustomersPage() {
             />
             <TextBlockWithLabel
                 label='Billing Address'
-                text={`${customer.BillAddr.Line1}, ${customer.BillAddr.City}, ${customer.BillAddr.CountrySubDivisionCode}, ${customer.BillAddr.PostalCode}`}
+                text={
+                    [customer.BillAddr.Line1, customer.BillAddr.City, customer.BillAddr.CountrySubDivisionCode, customer.BillAddr.PostalCode]
+                        .filter(Boolean)
+                        .join('<br />')
+                }
+                isHTML
             />
             <TextBlockWithLabel
                 label='Shipping Address'
-                text={`${customer.ShipAddr.Line1}, ${customer.ShipAddr.City}, ${customer.ShipAddr.CountrySubDivisionCode}, ${customer.ShipAddr.PostalCode}`}
+                text={
+                    [customer.ShipAddr.Line1, customer.ShipAddr.City, customer.ShipAddr.CountrySubDivisionCode, customer.ShipAddr.PostalCode]
+                        .filter(Boolean)
+                        .join('<br />')
+                }
+                isHTML
             />
         </Container>
     );
