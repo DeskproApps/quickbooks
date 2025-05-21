@@ -93,9 +93,9 @@ function ViewCustomersPage() {
             />
             <TwoSider
                 leftLabel='Balance'
-                leftText={`${customer.Balance} ${customer.CurrencyRef.value}`}
+                leftText={`${Number(customer.Balance).toFixed(2)} ${customer.CurrencyRef.value}`}
                 rightLabel='Balance with Jobs'
-                rightText={`${customer.BalanceWithJobs} ${customer.CurrencyRef.value}`}
+                rightText={`${Number(customer.BalanceWithJobs).toFixed(2)} ${customer.CurrencyRef.value}`}
             />
             <TextBlockWithLabel
                 label='Email'
