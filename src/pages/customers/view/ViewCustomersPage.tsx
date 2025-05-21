@@ -93,9 +93,9 @@ function ViewCustomersPage() {
             />
             <TwoSider
                 leftLabel='Balance'
-                leftText={`${customer.Balance} ${customer.CurrencyRef.value}`}
+                leftText={`${Number(customer.Balance).toFixed(2)} ${customer.CurrencyRef.value}`}
                 rightLabel='Balance with Jobs'
-                rightText={`${customer.BalanceWithJobs} ${customer.CurrencyRef.value}`}
+                rightText={`${Number(customer.BalanceWithJobs).toFixed(2)} ${customer.CurrencyRef.value}`}
             />
             <TextBlockWithLabel
                 label='Email'
@@ -107,11 +107,21 @@ function ViewCustomersPage() {
             />
             <TextBlockWithLabel
                 label='Billing Address'
-                text={`${customer.BillAddr.Line1}, ${customer.BillAddr.City}, ${customer.BillAddr.CountrySubDivisionCode}, ${customer.BillAddr.PostalCode}`}
+                text={
+                    [customer.BillAddr.Line1, customer.BillAddr.City, customer.BillAddr.CountrySubDivisionCode, customer.BillAddr.PostalCode]
+                        .filter(Boolean)
+                        .join('<br />')
+                }
+                isHTML
             />
             <TextBlockWithLabel
                 label='Shipping Address'
-                text={`${customer.ShipAddr.Line1}, ${customer.ShipAddr.City}, ${customer.ShipAddr.CountrySubDivisionCode}, ${customer.ShipAddr.PostalCode}`}
+                text={
+                    [customer.ShipAddr.Line1, customer.ShipAddr.City, customer.ShipAddr.CountrySubDivisionCode, customer.ShipAddr.PostalCode]
+                        .filter(Boolean)
+                        .join('<br />')
+                }
+                isHTML
             />
         </Container>
     );
