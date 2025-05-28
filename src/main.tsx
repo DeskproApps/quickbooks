@@ -1,9 +1,10 @@
+import * as Sentry from '@sentry/react';
+import './instrument';
 import "./main.css";
 import "@deskpro/deskpro-ui/dist/deskpro-custom-icons.css";
 import "@deskpro/deskpro-ui/dist/deskpro-ui.css";
 import "simplebar/dist/simplebar.min.css";
 import { DeskproAppProvider, LoadingSpinner } from "@deskpro/app-sdk";
-import { ErrorBoundary } from "react-error-boundary";
 import { HashRouter } from "react-router-dom";
 import { queryClient } from "@/query";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -12,7 +13,9 @@ import { StrictMode, Suspense } from "react";
 import App from "./App";
 import ReactDOM from "react-dom/client";
 
-const root = ReactDOM.createRoot(document.getElementById('root') as Element);
+const root = ReactDOM.createRoot(document.getElementById('root') as Element, {
+  onRecoverableError: Sentry.reactErrorHandler(),
+});
 root.render((
   <StrictMode>
     <Scrollbar style={{ height: "100%", width: "100%" }} autoHide>
@@ -20,9 +23,9 @@ root.render((
         <HashRouter>
           <QueryClientProvider client={queryClient}>
             <Suspense fallback={<LoadingSpinner />}>
-              <ErrorBoundary fallback={<>There was an error!</>}>
+              <Sentry.ErrorBoundary fallback={<>There was an error!</>}>
                 <App />
-              </ErrorBoundary>
+              </Sentry.ErrorBoundary>
             </Suspense>
           </QueryClientProvider>
         </HashRouter>
