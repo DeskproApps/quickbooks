@@ -15,6 +15,8 @@ import refreshAccessToken from '../refreshAccessToken';
 export default async function baseRequest<T>(client: IDeskproClient, reqProps: RequestParams): Promise<T> {
     const { endpoint, realmId, data, method = "GET", queryParams = {}, headers: customHeaders } = reqProps
 
+    const isUsingGlobalProxy = (await client.getUserState<boolean>("isUsingGlobalProxy"))[0]?.data ?? false
+
     const dpFetch = await proxyFetch(client)
 
     // Check if the endpoint already contains query parameters
@@ -36,43 +38,38 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
         requestUrl = `${baseUrl}?${params}`
     }
 
-    const options: RequestInit = {
-        method,
-        body: data,
-        headers: {
-            "Authorization": `Bearer [user[${placeholders.OAUTH2_ACCESS_TOKEN_PATH}]]`,
-            "Accept": "application/json",
-            ...customHeaders,
-            ...(data ? { "Content-Type": "application/json" } : {}),
-        },
-    };
+    async function makeRequest(): Promise<Response> {
+        const options: RequestInit = {
+            method,
+            body: data,
+            headers: {
+                "Authorization": `Bearer [user[${placeholders.OAUTH2_ACCESS_TOKEN_PATH}]]`,
+                "Accept": "application/json",
+                ...customHeaders,
+                ...(data ? { "Content-Type": "application/json" } : {}),
+            },
+        }
 
-    let res = await dpFetch(requestUrl, options);
+        return await dpFetch(requestUrl, options)
+    }
 
-    if (res.status === 401) {
+    let response = await makeRequest()
+
+    // We cannot refresh the access token if we are using the global proxy
+    // because the client id and secret key will not be available.
+    if (response.status === 401 && !isUsingGlobalProxy) {
         try {
-            const tokens = await refreshAccessToken(client);
+            await refreshAccessToken(client)
+            response = await makeRequest()
 
-            await client.setUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH, tokens.access_token, {backend: true});
-
-            if (tokens.refresh_token) {
-                await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, tokens.refresh_token, {backend: true});
-            };
-
-            options.headers = {
-                ...options.headers,
-                'Authorization': `Bearer ${tokens.access_token}`
-            };
-
-            res = await dpFetch(requestUrl, options);
         } catch (refreshError) {
-            throw new QuickBooksError('failed to refresh access token', {statusCode: 401, data: refreshError});
+            throw new QuickBooksError('failed to refresh access token', { statusCode: 401, data: refreshError });
         };
     };
 
-    if (res.status < 200 || res.status > 399) {
+    if (response.status < 200 || response.status > 399) {
         let errorData: unknown;
-        const rawText = await res.text()
+        const rawText = await response.text()
 
         try {
             errorData = JSON.parse(rawText)
@@ -80,11 +77,11 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
             errorData = { message: "Non-JSON error response received", raw: rawText }
         }
 
-        throw new QuickBooksError("Request failed", { statusCode: res.status, data: errorData })
+        throw new QuickBooksError("Request failed", { statusCode: response.status, data: errorData })
     }
 
     try {
-        return await res.json() as T
+        return await response.json() as T
     } catch (e) {
         throw new QuickBooksError("Failed to parse JSON response", { statusCode: 500, data: e })
     }

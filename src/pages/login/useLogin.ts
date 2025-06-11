@@ -111,6 +111,11 @@ export default function useLogin(): UseLoginResult {
                                     throw new Error(errorMessage)
                                 }
                                 break
+                                case "SERVICE": 
+                                if(fault.error?.[0].code  === "3100"){
+                                    throw new Error(`Error authenticating user: Ensure the QuickBooks app is setup to use ${isUsingSandbox ? "sandbox" : "production"} accounts.`)
+
+                                }
                         }
                     };
 

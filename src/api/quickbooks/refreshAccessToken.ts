@@ -1,22 +1,32 @@
 import { IDeskproClient, OAuth2Result, proxyFetch } from '@deskpro/app-sdk';
 import { placeholders } from '@/constants';
 
-export default async function refreshAccessToken(client: IDeskproClient) {
-    const fetch = await proxyFetch(client);
+export default async function refreshAccessToken(client: IDeskproClient): Promise<void> {
+    const dpFetch = await proxyFetch(client);
 
-    const response = await fetch('https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer', {
-        method: 'POST',
+    const body = `grant_type=refresh_token&refresh_token=[user[${placeholders.OAUTH2_REFRESH_TOKEN_PATH}]]`
+
+
+    const refreshRequestOptions: RequestInit = {
+        method: "POST",
+        body: body,
         headers: {
-            'Authorization': "Basic __client_id+':'+client_secret.base64__",
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Basic __integration_key+':'+secret_key.base64__`,
         },
-        body: `grant_type=refresh_token&refresh_token=[user[${placeholders.OAUTH2_REFRESH_TOKEN_PATH}]]`
-    });
+    }
+
+    const response = await dpFetch('https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer', refreshRequestOptions);
 
     if (!response.ok) {
         throw new Error(`QuickBooks token refresh failed with status code: ${response.status}`);
     };
 
-    return await response.json() as OAuth2Result['data'];
+    const data = await response.json() as OAuth2Result['data']
+
+    await client.setUserState(placeholders.OAUTH2_ACCESS_TOKEN_PATH, data.access_token, { backend: true });
+
+    if (data.refresh_token) {
+        await client.setUserState(placeholders.OAUTH2_REFRESH_TOKEN_PATH, data.refresh_token, { backend: true });
+    }
 };
