@@ -20,7 +20,7 @@ export interface QuickBooksErrorObject {
 export interface QuickBooksFault {
     error?: Pick<QuickBooksErrorObject, "message" | "code" | "detail" | "element" | "statusCode">[]
     Error?: Pick<QuickBooksErrorObject, "Message" | "Detail" | "code">[]
-    type: "AuthorizationFault" | "AUTHENTICATION" 
+    type: "AuthorizationFault" | "AUTHENTICATION" | "SERVICE" | "AuthenticationFault"
 }
 
 export interface QuickBooksFaultError {

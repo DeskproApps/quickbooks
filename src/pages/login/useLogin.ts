@@ -25,6 +25,8 @@ export default function useLogin(): UseLoginResult {
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
 
     const user = context?.data?.user
+    const mode = context?.settings.use_advanced_connect === false ? 'global' : 'local';
+    const isUsingSandbox = context?.settings.use_sandbox === true
 
     // @todo: Update useInitialisedDeskproAppClient typing in the
     // App SDK to to properly handle both async and sync functions
@@ -36,7 +38,6 @@ export default function useLogin(): UseLoginResult {
         };
 
         const clientID = context.settings.client_id;
-        const mode = context.settings.use_advanced_connect ? 'local' : 'global';
 
         if (mode === 'local' && typeof clientID !== 'string') {
             return;
@@ -96,13 +97,25 @@ export default function useLogin(): UseLoginResult {
                     if (error instanceof QuickBooksError && isQuickBooksFaultError(error.data)) {
                         const fault = error.data.Fault ?? error.data.fault;
 
-                        if (fault?.type === "AuthorizationFault") {
-                            throw new Error("The user logging in isn't a part of the company specified in the app setup. Contact your admin for more information");
+                        switch (fault?.type) {
+                            case "AUTHENTICATION":
+                                throw new Error("An error occurred while authenticating the user.")
+                            case "AuthorizationFault":
+                                throw new Error("The user logging in isn't a part of the company specified in the app setup. Contact your admin for more information.");
+                            case "AuthenticationFault":
+                                if (fault.Error?.[0].Message === "Accessing Wrong Cluster") {
+                                    const errorMessage = mode === "global" ?
+                                        "Error authenticating user: Sandbox accounts cannot be used with Quick Connect."
+                                        :
+                                        `Error authenticating user: Ensure the QuickBooks app is setup to use ${isUsingSandbox ? "sandbox" : "production"} accounts.`
+                                    throw new Error(errorMessage)
+                                }
+                                break
                         }
                     };
 
                     // generic error for all other errors
-                    throw new Error('error authenticating user. Are you using a sandbox company (double-check on QuickBooks, and the settings drawer of the QuickBooks app in Deskpro)?');
+                    throw new Error(`An unexpected error occurred: ${error instanceof Error ? error.message : "Unknown Error"}.`);
                 };
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'unknown error');
