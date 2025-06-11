@@ -40,7 +40,7 @@ export default async function baseRequest<T>(client: IDeskproClient, reqProps: R
         method,
         body: data,
         headers: {
-            "Authorization": `Bearer ${placeholders.OAUTH2_ACCESS_TOKEN_PATH}`,
+            "Authorization": `Bearer [user[${placeholders.OAUTH2_ACCESS_TOKEN_PATH}]]`,
             "Accept": "application/json",
             ...customHeaders,
             ...(data ? { "Content-Type": "application/json" } : {}),
