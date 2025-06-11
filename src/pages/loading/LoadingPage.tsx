@@ -21,21 +21,25 @@ export default function LoadingPage() {
         clearElements();
         registerElement('refresh', { type: 'refresh_button' });
     }, []);
+    const isUsingGlobalProxy = context?.settings.use_advanced_connect === false
+    const isUsingSandbox = context?.settings.use_sandbox === true;
+    const companyId = context?.settings.company_id
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
         client.setTitle('QuickBooks');
 
-        if (!context || !user) {
+        if (!companyId || !user) {
             return;
         };
 
-        const isUsingSandbox = context.settings.use_sandbox;
 
         await client.setUserState(placeholders.IS_USING_SANDBOX, isUsingSandbox);
+        await client.setUserState("isUsingGlobalProxy", isUsingGlobalProxy)
+
 
         try {
-            const company = await getCompanyInfo(client, context.settings.company_id);
+            const company = await getCompanyInfo(client, companyId);
 
             if (company) {
                 setIsAuthenticated(true);
@@ -46,7 +50,7 @@ export default function LoadingPage() {
         } finally {
             setIsFetchingAuth(false);
         };
-    }, [context, context?.settings]);
+    }, [isUsingSandbox, companyId, isUsingGlobalProxy]);
 
 
     if (!client || !user || isFetchingAuth) {
