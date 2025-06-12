@@ -33,7 +33,7 @@
       "isRequired": false,
       "isBackendOnly": false,
       "default": false,
-      "condition": "settings.use_advanced_connect == true",
+      "condition": "settings.use_advanced_connect != false",
       "order": 2
     },
     "company_id": {
@@ -48,7 +48,7 @@
       "type": "string",
       "isRequired": false,
       "isBackendOnly": false,
-      "condition": "settings.use_advanced_connect == true",
+      "condition": "settings.use_advanced_connect != false",
       "order": 4
     },
     "client_secret": {
@@ -56,7 +56,7 @@
       "type": "string",
       "isRequired": false,
       "isBackendOnly": true,
-      "condition": "settings.use_advanced_connect == true",
+      "condition": "settings.use_advanced_connect != false",
       "order": 5
     },
     "callback_url": {
@@ -65,7 +65,7 @@
       "options": { "entrypoint": "#/admin/callback", "height": "80px" },
       "isRequired": false,
       "isBackendOnly": false,
-      "condition": "settings.use_advanced_connect == true",
+      "condition": "settings.use_advanced_connect != false",
       "order": 6
     }
   },
