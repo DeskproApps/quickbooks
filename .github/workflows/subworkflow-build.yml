@@ -49,7 +49,8 @@ jobs:
           if [ -n "${{ github.event.pull_request.number }}" ]; then
             # Regular PR case
             echo "PR number found: ${{ github.event.pull_request.number }}"
-            labels=$(jq -r '[.[] | .name] | join(",")' <<< '${{ toJson(github.event.pull_request.labels) }}')
+            json_labels='${{ toJson(github.event.pull_request.labels) }}'
+            labels=$(echo "$json_labels" | jq -r '[.[] | .name] | join(",")')
           else
             # Merge queue case - find PR by head ref
             echo "No PR number found, checking for merge group"
