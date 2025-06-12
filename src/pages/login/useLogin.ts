@@ -39,7 +39,9 @@ export default function useLogin(): UseLoginResult {
 
         const clientID = context.settings.client_id;
 
-        if (mode === 'local' && typeof clientID !== 'string') {
+        if (mode === 'local' && (typeof clientID !== 'string' || clientID.trim() === "")) {
+            // Local mode requires a clientId.
+            setError("No client id was provided while setting up the app, a client id is required when using advanced connect.")
             return;
         };
 
@@ -72,7 +74,7 @@ export default function useLogin(): UseLoginResult {
 
         setAuthUrl(oauth2Response.authorizationUrl)
         setOAuth2Context(oauth2Response)
-    }, [context, setAuthUrl]);
+    }, [context?.settings, setAuthUrl, mode, user]);
 
 
     useInitialisedDeskproAppClient((client) => {
@@ -111,8 +113,8 @@ export default function useLogin(): UseLoginResult {
                                     throw new Error(errorMessage)
                                 }
                                 break
-                                case "SERVICE": 
-                                if(fault.error?.[0].code  === "3100"){
+                            case "SERVICE":
+                                if (fault.error?.[0].code === "3100") {
                                     throw new Error(`Error authenticating user: Ensure the QuickBooks app is setup to use ${isUsingSandbox ? "sandbox" : "production"} accounts.`)
 
                                 }
