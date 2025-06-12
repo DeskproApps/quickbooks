@@ -27,19 +27,20 @@ export default function useLogin(): UseLoginResult {
     const user = context?.data?.user
     const mode = context?.settings.use_advanced_connect === false ? 'global' : 'local';
     const isUsingSandbox = context?.settings.use_sandbox === true
+    const settings = context?.settings
 
     // @todo: Update useInitialisedDeskproAppClient typing in the
     // App SDK to to properly handle both async and sync functions
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     useInitialisedDeskproAppClient(async client => {
-        if (!context?.settings || !user) {
+        if (!settings || !user) {
             return;
         };
 
-        const clientID = context.settings.client_id;
+        const clientId = settings.client_id;
 
-        if (mode === 'local' && (typeof clientID !== 'string' || clientID.trim() === "")) {
+        if (mode === 'local' && (typeof clientId !== 'string' || clientId.trim() === "")) {
             // Local mode requires a clientId.
             setError("No client id was provided while setting up the app, a client id is required when using advanced connect.")
             return;
@@ -50,7 +51,7 @@ export default function useLogin(): UseLoginResult {
             ({ state, callbackUrl }) => {
                 return `https://appcenter.intuit.com/connect/oauth2?${createSearchParams([
                     ["response_type", "code"],
-                    ["client_id", clientID || ''],
+                    ["client_id", clientId ?? ''],
                     ["redirect_uri", callbackUrl],
                     ['scope', SCOPE],
                     ["state", state],
@@ -74,11 +75,11 @@ export default function useLogin(): UseLoginResult {
 
         setAuthUrl(oauth2Response.authorizationUrl)
         setOAuth2Context(oauth2Response)
-    }, [context?.settings, setAuthUrl, mode, user]);
+    }, [settings, setAuthUrl, mode, user]);
 
 
     useInitialisedDeskproAppClient((client) => {
-        if (!user || !oauth2Context) {
+        if (!user || !oauth2Context || !settings?.company_id) {
             return
         }
 
@@ -93,7 +94,7 @@ export default function useLogin(): UseLoginResult {
                 }
 
                 try {
-                    await getCompanyInfo(client, context.settings.company_id);
+                    await getCompanyInfo(client, settings.company_id);
                     void navigate('/');
                 } catch (error) {
                     if (error instanceof QuickBooksError && isQuickBooksFaultError(error.data)) {
@@ -136,7 +137,7 @@ export default function useLogin(): UseLoginResult {
         if (isPolling) {
             void startPolling()
         }
-    }, [isPolling, user, oauth2Context, navigate, context?.settings.company_id]);
+    }, [isPolling, user, oauth2Context, navigate, settings?.company_id]);
 
     const onSignIn = useCallback(() => {
         setIsLoading(true);
