@@ -49,8 +49,7 @@ jobs:
           if [ -n "${{ github.event.pull_request.number }}" ]; then
             # Regular PR case
             echo "PR number found: ${{ github.event.pull_request.number }}"
-            json_labels='${{ toJson(github.event.pull_request.labels) }}'
-            labels=$(echo "$json_labels" | jq -r '[.[] | .name] | join(",")')
+            labels=$(jq -r '[.[] | .name] | join(",")' <<< '${{ toJson(github.event.pull_request.labels) }}')
           else
             # Merge queue case - find PR by head ref
             echo "No PR number found, checking for merge group"
@@ -108,6 +107,10 @@ jobs:
             # Tag
             MILESTONE=$(echo "$LABELS" | grep -E 'major-version|minor-version' | head -1)
             VERSION_NEW=$(pnpm run bumpManifestVer "$MILESTONE" "$VERSION" | tail -n 1)
+            if [ "$PUSH_TAG" != "true" ]; then
+              # Remove serveUrl if not pushing as it wont be deployed to the CDN.
+              jq 'del(.serveUrl)' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+            fi
             pnpm prettier --write manifest.json
             git tag -a $VERSION_NEW -m "Version $VERSION_NEW"
 
