@@ -84,12 +84,34 @@
       {
         "url": "https://oauth.platform.intuit.com/oauth2/v1/.*",
         "methods": ["POST"],
-        "timeout": 20
+        "timeout": 20,
+        "settingsInjection": {
+          "client_id": {
+            "header": ["Authorization"]
+          },
+          "client_secret": {
+            "header": ["Authorization"]
+          },
+          "integration_key": {
+            "header": ["Authorization"]
+          },
+          "secret_key": {
+            "header": ["Authorization"]
+          }
+        }
       },
       {
         "url": "https://developer.api.intuit.com/v2/oauth2/tokens/revoke",
         "methods": ["POST"],
-        "timeout": 20
+        "timeout": 20,
+        "settingsInjection": {
+          "client_id": {
+            "header": ["Authorization"]
+          },
+          "client_secret": {
+            "header": ["Authorization"]
+          }
+        }
       }
     ]
   }

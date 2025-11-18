@@ -6,7 +6,7 @@ export const placeholders = {
     OAUTH2_ACCESS_TOKEN_PATH: 'oauth2/access_token',
     OAUTH2_REFRESH_TOKEN_PATH: 'oauth2/refresh_token',
     IS_USING_SANDBOX: 'is_using_sandbox',
-};
+} as const;
 
 export const GLOBAL_CLIENT_ID = 'ABvWsXjB1yre80UrAXj7uDaWUOWPiW7CZ04t0BJgM75UJZYxJ8';
 
